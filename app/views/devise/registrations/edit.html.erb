@@ -1,0 +1,53 @@
+<%= content_for :page_title, 'Fundraising Marketplace | Your account' %>
+<div class="container">
+  <div class="row topspace-lg">
+    <div class="col-md-6 col-md-offset-3">
+      <h1 class="text-center">Manage your account</h1>
+      <%= devise_error_messages! %>
+      <%= render 'layouts/messages' %>
+      <div class="panel panel-default topspace-lg">
+        <div class="panel-body placeholder">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+            <%= devise_error_messages! %>
+
+            <div class="form-group">
+              <%= f.label :email %>
+              <%= f.email_field :email, class: 'form-control input-lg', placeholder: "Email", autofocus: true %>
+            </div>
+
+            <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+              <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+            <% end %>
+
+            <div class="form-group">
+              <%= f.password_field :password, autocomplete: "off", class: 'form-control input-lg', placeholder: "New password" %>
+              <span class="help-block">Leave blank if you don't want to change your password</span>
+            </div>
+
+            <div class="form-group">
+              <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control input-lg', placeholder: "Confirm new password" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.password_field :current_password, autocomplete: "off", class: 'form-control input-lg', placeholder: "Current password" %>
+            </div>
+
+            <div class="actions">
+              <%= f.submit "Update", class: "btn btn-primary btn-lg btn-block btn-custom", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Updating your account..."} %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row topspace">
+    <div class="col-md-6 col-md-offset-3 text-center">
+      <p>
+        <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure you want to cancel your account? You can't undo this" }, method: :delete, class: "btn btn-danger btn-lg btn-block btn-custom" %>
+      </p>
+      <p>
+        <%= link_to "Back", :back %>
+      </p>
+    </div>
+  </div>
+</div>

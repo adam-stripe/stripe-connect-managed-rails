@@ -1,0 +1,37 @@
+<%= content_for :page_title, 'Fundraising Marketplace | Sign up' %>
+<div class="container">
+  <div class="row topspace-lg">
+    <div class="col-md-6 col-md-offset-3">
+      <h1 class="text-center">Sign up for Fundraising Marketplace</h1>
+      <%= devise_error_messages! %>
+      <%= render 'layouts/messages' %>
+      <div class="panel panel-default topspace-lg">
+        <div class="panel-body placeholder">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <div class="form-group">
+              <%= f.label :email %>
+              <%= f.email_field :email, class: 'form-control input-lg', placeholder: "Email", autofocus: true %>
+            </div>
+            <div class="form-group">
+              <%= f.label :password %>
+              <%= f.password_field :password, autocomplete: "off", class: 'form-control input-lg', placeholder: "Password" %>
+            </div>
+            <div class="form-group">
+              <%= f.label :password_confirmation %>
+              <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control input-lg', placeholder: "Confirm password" %>
+            </div>
+            <div class="form-group">
+              <%= f.button "Sign up", class: "btn btn-primary btn-lg btn-block btn-custom", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Signing up..."} %>
+            </div>
+            <% if params[:plan].present? %>
+              <input type="hidden" name="plan" value="<%= params[:plan] %>">
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="text-center">
+        Already have an account? <%= link_to "Sign in", new_user_session_path %>
+      </div>
+    </div>
+  </div>
+</div>

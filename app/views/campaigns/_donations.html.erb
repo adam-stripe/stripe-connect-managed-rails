@@ -1,0 +1,11 @@
+<% @charges.each do | charge | %>
+  <div class="row">
+    <div class="col-md-12">
+      <h4>
+        <span class="raised"><%= number_to_currency(charge.amount/100) %></span> donated by <%= charge.name %>
+        <small class="pull-right"><%= time_ago_in_words(charge.created_at) %> ago</small>
+      </h4>
+      <hr>
+    </div>
+  </div>
+<% end %>

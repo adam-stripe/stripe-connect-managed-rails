@@ -1,0 +1,14 @@
+<% if @stripe_account.verification.fields_needed %>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-warning text-center shadow-sm">
+        <h4>
+          We need some information to continue processing donations for you. 
+        </h4>
+        <p>
+          <%= link_to "Update your information", edit_stripe_account_path(@stripe_account.id), class: "btn btn-lg btn-warning btn-custom" %>
+        </p>
+      </div>
+    </div>
+  </div>
+<% end %>

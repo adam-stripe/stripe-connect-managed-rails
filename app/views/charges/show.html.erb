@@ -1,0 +1,45 @@
+<%= content_for :page_title, 'Fundraising Marketplace | Review charge' %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center topspace-lg">
+      <%= render 'layouts/messages' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="page-header">
+        <%= @charge.id %> <small class="pull-right raised"><%= format_amount(@charge.amount) %></small>
+      </h2>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <dl>
+            <dt>From:</dt>
+            <dd><%= @charge.metadata.name %></dd>
+            <hr>
+            <dt>Payment method:</dt>
+            <dd><%= @charge.source.brand %> ending in <%= @charge.source.last4 %></dd>
+            <hr>
+            <dt>For:</dt>
+            <dd><%= link_to @campaign.title, campaign_path(@campaign) %></dd>
+            <hr>
+            <dt>Fundraising Marketplace fee:</dt>
+            <dd><%= format_amount(@charge.application_fee.amount) %></dd>
+            <hr>
+            <dt>Net earnings:</dt>
+            <dd><%= format_amount(@charge.amount - @charge.application_fee.amount) %></dd>
+            <hr>
+            <dt>Created:</dt>
+            <dd><%= format_date(@charge.created) %></dd>
+            <hr>
+            <dt>Refunded:</dt>
+            <dd><%= @charge.refunded %></dd>
+            <hr>
+          </dl>
+          <% unless @charge.refunded %>
+            <%= link_to "Refund this donation", charge_path(@charge.id), method: :delete, data: { confirm: "Are you sure you want to refund this charge?", disable_with: "<i class='fa fa-spinner fa-spin'></i> Refunding charge..." }, class: "btn btn-lg btn-block btn-custom btn-danger" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

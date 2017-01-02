@@ -1,0 +1,35 @@
+<% @campaigns.each do | campaign | %>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default campaign">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-2">
+              <%= image_tag("#{campaign.image}?q=75&fm=jpg&w=400&fit=max", class: "img-responsive img-thumbnail") %>
+            </div>
+            <div class="col-md-8">
+              <h2><%= link_to campaign.title.titleize, campaign_path(campaign) %></a></h2>
+              <h4 class="goal">
+                <% if campaign.raised %>
+                   <span class="raised"><%= number_to_currency(campaign.raised/100) %></span> raised so far of <strong><%= number_to_currency(campaign.goal) %> goal</strong>
+                <% else %>
+                  <strong><%= number_to_currency(campaign.goal) %> goal</strong>
+                <% end %>
+              </h4>
+              <p>
+                <%= simple_format(campaign.description) %>
+              </p>
+            </div>
+            <div class="col-md-2">
+              <% if campaign.active %>
+                <%= link_to "View", campaign_path(campaign), class: "btn btn-lg btn-block btn-purple btn-custom" %></a>
+              <% else %>
+                <%= link_to "Inactive", campaign_path(campaign), class: "btn btn-lg btn-block btn-danger btn-custom" %></a>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

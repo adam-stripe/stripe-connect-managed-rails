@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  account_type: MyString
+  dob_month: 1
+  dob_day: 1
+  dob_year: 1
+
+two:
+  first_name: MyString
+  last_name: MyString
+  account_type: MyString
+  dob_month: 1
+  dob_day: 1
+  dob_year: 1

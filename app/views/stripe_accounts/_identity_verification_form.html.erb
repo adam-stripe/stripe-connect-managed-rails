@@ -1,0 +1,292 @@
+<div class="panel panel-default topspace-lg">
+  <div class="panel-body">
+    <%= form_tag stripe_account_path, method: "patch", id: "account_form" do |f| %>
+      <% if @stripe_account.verification.fields_needed.find { |e| /address/ =~ e } %>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Address</label>
+              <input type="text" name="stripe_account[legal_entity.address.line1]" class="form-control input-lg" placeholder="185 Berry St" value="<%= @stripe_account.legal_entity.address.line1 %>">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" name="stripe_account[legal_entity.address.city]" class="form-control input-lg" placeholder="Denver" value="<%= @stripe_account.legal_entity.address.city %>">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>State</label>
+              <select class="form-control input-lg" name="stripe_account[legal_entity.address.state]">
+                <option value="AL" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('AL') %>>Alabama</option>
+                <option value="AK" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('AK') %>>Alaska</option>
+                <option value="AZ" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('AZ') %>>Arizona</option>
+                <option value="AR" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('AR') %>>Arkansas</option>
+                <option value="CA" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('CA') %>>California</option>
+                <option value="CO" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('CO') %>>Colorado</option>
+                <option value="CT" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('CT') %>>Connecticut</option>
+                <option value="DE" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('DE') %>>Delaware</option>
+                <option value="DC" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('DC') %>>District Of Columbia</option>
+                <option value="FL" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('FL') %>>Florida</option>
+                <option value="GA" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('GA') %>>Georgia</option>
+                <option value="HI" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('HI') %>>Hawaii</option>
+                <option value="ID" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('ID') %>>Idaho</option>
+                <option value="IL" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('IL') %>>Illinois</option>
+                <option value="IN" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('IN') %>>Indiana</option>
+                <option value="IA" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('IA') %>>Iowa</option>
+                <option value="KS" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('KS') %>>Kansas</option>
+                <option value="KY" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('KY') %>>Kentucky</option>
+                <option value="LA" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('LA') %>>Louisiana</option>
+                <option value="ME" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('ME') %>>Maine</option>
+                <option value="MD" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('MD') %>>Maryland</option>
+                <option value="MA" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('MA') %>>Massachusetts</option>
+                <option value="MI" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('MI') %>>Michigan</option>
+                <option value="MN" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('MN') %>>Minnesota</option>
+                <option value="MS" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('MS') %>>Mississippi</option>
+                <option value="MO" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('MO') %>>Missouri</option>
+                <option value="MT" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('MT') %>>Montana</option>
+                <option value="NE" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('NE') %>>Nebraska</option>
+                <option value="NV" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('NV') %>>Nevada</option>
+                <option value="NH" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('NH') %>>New Hampshire</option>
+                <option value="NJ" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('NJ') %>>New Jersey</option>
+                <option value="NM" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('NM') %>>New Mexico</option>
+                <option value="NY" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('NY') %>>New York</option>
+                <option value="NC" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('NC') %>>North Carolina</option>
+                <option value="ND" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('ND') %>>North Dakota</option>
+                <option value="OH" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('OH') %>>Ohio</option>
+                <option value="OK" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('OK') %>>Oklahoma</option>
+                <option value="OR" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('OR') %>>Oregon</option>
+                <option value="PA" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('PA') %>>Pennsylvania</option>
+                <option value="RI" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('RI') %>>Rhode Island</option>
+                <option value="SC" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('SC') %>>South Carolina</option>
+                <option value="SD" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('SD') %>>South Dakota</option>
+                <option value="TN" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('TN') %>>Tennessee</option>
+                <option value="TX" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('TX') %>>Texas</option>
+                <option value="UT" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('UT') %>>Utah</option>
+                <option value="VT" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('VT') %>>Vermont</option>
+                <option value="VA" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('VA') %>>Virginia</option>
+                <option value="WA" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('WA') %>>Washington</option>
+                <option value="WV" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('WV') %>>West Virginia</option>
+                <option value="WI" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('WI') %>>Wisconsin</option>
+                <option value="WY" <%= "selected" if @stripe_account.legal_entity.address.state.eql?('WY') %>>Wyoming</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Zip code</label>
+              <input type="text" name="stripe_account[legal_entity.address.postal_code]" class="form-control input-lg" placeholder="80205" value="<%= @stripe_account.legal_entity.address.postal_code %>">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <hr>
+          </div>
+        </div>
+      <% end %>
+      <% if @stripe_account.verification.fields_needed.include?('legal_entity.type') %>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Account type</label>
+              <select class="form-control input-lg" name="stripe_account[legal_entity.type]">
+                <option value="individual" <%= "selected" if @stripe_account.legal_entity.type.eql?('individual') %>>Individual</option>
+                <option value="company" <%= "selected" if @stripe_account.legal_entity.type.eql?('company') %>>Company</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <% if @stripe_account.verification.fields_needed.find { |e| /name/ =~ e } %>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>First name</label>
+              <input type="text" name="stripe_account[legal_entity.first_name]" class="form-control input-lg" placeholder="Jane" value="<%= @stripe_account.legal_entity.first_name %>">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Last name</label>
+              <input type="text" name="stripe_account[legal_entity.last_name]" class="form-control input-lg" placeholder="Doe" value="<%= @stripe_account.legal_entity.last_name %>">
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <% if @stripe_account.verification.fields_needed.find { |e| /dob/ =~ e } %>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>DOB Month</label>
+              <select class="form-control input-lg" name="stripe_account[legal_entity.dob.month]">
+                <option value="01" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('01') %>>January</option>
+                <option value="02" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('02') %>>February</option>
+                <option value="03" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('03') %>>March</option>
+                <option value="04" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('04') %>>April</option>
+                <option value="05" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('05') %>>May</option>
+                <option value="06" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('06') %>>June</option>
+                <option value="07" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('07') %>>July</option>
+                <option value="08" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('08') %>>August</option>
+                <option value="09" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('09') %>>September</option>
+                <option value="10" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('10') %>>October</option>
+                <option value="11" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('11') %>>November</option>
+                <option value="12" <%= "selected" if @stripe_account.legal_entity.dob.month.eql?('12') %>>December</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>DOB Day</label>
+              <select class="form-control input-lg" name="stripe_account[legal_entity.dob.day]">
+                <% (1..31).each do | n | %>
+                  <option value="<%= n %>" <%= "selected" if @stripe_account.legal_entity.dob.day.eql?(n) %>><%= n %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>DOB Year</label>
+              <select class="form-control input-lg" name="stripe_account[legal_entity.dob.year]">
+                <% (1916..1998).each do | n | %>
+                  <option value="<%= n %>" <%= "selected" if @stripe_account.legal_entity.dob.year.eql?(n) %>><%= n %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <hr>
+          </div>
+        </div>
+      <% end %>
+      <% if @stripe_account.verification.fields_needed.include?('legal_entity.ssn_last_4') %>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Last 4 digits of your SSN (used to verify your identity)</label>
+              <input type="text" name="stripe_account[legal_entity.ssn_last_4]" class="form-control input-lg" placeholder="6789">
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <% if @stripe_account.verification.fields_needed.include?('legal_entity.personal_id_number') %>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Full social security number (used to verify your identity)</label>
+              <input type="text" id="personal_id_number" class="form-control input-lg" placeholder="123-45-6789">
+              <span class="help-block">Never stored, only used to verify your identity.</span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <% if @stripe_account.verification.fields_needed.include?('legal_entity.verification.document') %>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Upload a photo ID</label>
+              <input type="file" id="file_upload" name="file" required />
+              <span class="help-block">We need a picture of your government-issued ID to verify your identity.</span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <button type="submit" class="btn btn-lg btn-block btn-primary btn-custom submit">Submit your information</button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  Stripe.setPublishableKey("<%= ENV['PUBLISHABLE_KEY'] %>");
+
+  $(function() {
+    var $form = $('#account_form');
+
+    // If a personal ID number is requested, tokenize it
+    if ($('#personal_id_number').length){
+      $form.submit(function(event) {
+        // Disable the submit button to prevent repeated clicks:
+        $form.find('.submit').prop('disabled', true).html("<i class='fa fa-spinner fa-spin'></i> Submitting your information...");
+        // Create the token using Stripe.js
+        Stripe.piiData.createToken({
+          personal_id_number: $('#personal_id_number').val()
+        }, stripeResponseHandler);
+        return false;
+      });
+    }
+    // If an identity document is requested, upload it
+    if ($('#file_upload').length){
+      $form.submit(function(event) {
+        // Prevent the form submission
+        event.preventDefault();
+
+        // Disable the submit button to prevent repeated clicks:
+        $form.find('.submit').prop('disabled', true).html("<i class='fa fa-spinner fa-spin'></i> Submitting your information...");
+        // Remove any existing errors
+        $form.find('.alert-danger').remove();
+
+        var data = new FormData();
+        data.append('file', $('#file_upload')[0].files[0]);
+        data.append('purpose', 'identity_document');
+
+        $.ajax({
+          url: 'https://uploads.stripe.com/v1/files',
+          data: data,
+          headers: {
+            'Authorization': 'Bearer ' + "<%= ENV['PUBLISHABLE_KEY'] %>"
+          },
+          cache: false,
+          contentType: false,
+          processData: false,
+          type: 'POST',
+        })
+        .done(function(response) {
+          // Insert the token into the form so it gets submitted to the server:
+          $form.append($('<input type="hidden" name="stripe_account[legal_entity.verification.document]" />').val(response.id));
+          // Submit the form:
+          $form.get(0).submit();
+        })
+        .fail(function(response) {
+          console.log(response);
+          $form.append("<div class='alert alert-danger'>"+response.responseJSON.error.message+"</div>");
+          $form.find('.submit').prop('disabled', false).text('Submit your information'); // Re-enable submission
+        });
+      });
+    }
+  });
+
+  function stripeResponseHandler(status, response) {
+    // Grab the form:
+    var $form = $('#account_form');
+
+    if (response.error) { // Problem!
+      // Let the user know there was a problem
+      $form.append("<div class='alert alert-danger'>"+response.error.message+"</div>");
+      $form.find('.submit').prop('disabled', false); // Re-enable submission
+
+    } else { // Token created!
+      $form.find('.submit').html("<i class='fa fa-check'></i> Information submitted");
+
+      // Get the token ID:
+      var token = response.id;
+
+      // Insert the token into the form so it gets submitted to the server:
+      $form.append($('<input type="hidden" name="stripe_account[legal_entity.personal_id_number]" />').val(token));
+
+      // Submit the form:
+      $form.get(0).submit();
+    }
+  }
+</script>

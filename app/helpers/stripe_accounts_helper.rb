@@ -1,0 +1,2 @@
+module StripeAccountsHelper
+end

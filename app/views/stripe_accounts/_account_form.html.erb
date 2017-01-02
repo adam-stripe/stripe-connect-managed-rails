@@ -1,0 +1,87 @@
+<div class="panel panel-default topspace">
+  <div class="panel-body">
+    <%= form_for @stripe_account do | f | %>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <%= f.label :first_name, "First Name" %>
+            <%= f.text_field :first_name, class: "form-control input-lg", placeholder: "Jane" %>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <%= f.label :last_name, "Last Name" %>
+            <%= f.text_field :last_name, class: "form-control input-lg", placeholder: "Doe" %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <%= f.label :account_type, "Account Type" %>
+            <select class="form-control input-lg" id="account_type" name="stripe_account[account_type]">
+              <option value="individual">Individual</option>
+              <option value="company">Company</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>DOB Month</label>
+            <select class="form-control input-lg" id="dob_month" name="stripe_account[dob_month]">
+              <option value="01">January</option>
+              <option value="02">February</option>
+              <option value="03">March</option>
+              <option value="04">April</option>
+              <option value="05">May</option>
+              <option value="06">June</option>
+              <option value="07">July</option>
+              <option value="08">August</option>
+              <option value="09">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>DOB Day</label>
+            <select class="form-control input-lg" id="dob_day" name="stripe_account[dob_day]">
+              <% (1..31).each do | n | %>
+                <option value="<%= n %>"><%= n %></option>
+              <% end %>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>DOB Year</label>
+            <select class="form-control input-lg" id="dob_day" name="stripe_account[dob_year]">
+              <% (1916..1998).each do | n | %>
+                <option value="<%= n %>"><%= n %></option>
+              <% end %>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <%= f.check_box :tos %>
+            <%= f.label :tos, "I agree to the terms of service" %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <%= f.button "Create Account", class: "btn btn-primary btn-lg btn-block btn-custom", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Creating account..."} %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

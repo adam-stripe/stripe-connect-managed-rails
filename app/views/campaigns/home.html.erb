@@ -1,0 +1,23 @@
+<%= content_for :page_title, 'Fundraising Marketplace' %>
+<div class="home-hero">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 text-center topspace-lg">
+        <%= render 'layouts/messages' %>
+        <h1 class="topspace-lg">Fundraising Marketplace</h1>
+        <h3>A <a href="https://stripe.com/connect">Stripe Connect</a> example app</h3>
+        <p class="topspace-lg">
+          <%= link_to "Create your own fundraising campaign", new_campaign_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row topspace-lg">
+    <div class="col-md-12">
+      <h2 class="page-header"><i class="fa fa-line-chart purple"></i> Popular campaigns</h2>
+      <%= render 'campaigns' %>
+    </div>
+  </div>
+</div>

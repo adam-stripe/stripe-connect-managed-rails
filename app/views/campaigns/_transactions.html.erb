@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Balance amount</th>
+          <th>Available for transfer after</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions.each do |date,net| %>
+          <% unless net.eql?(0) %>
+            <tr>
+              <td><%= format_amount(net) %></td>
+              <td><%= format_date(date) %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

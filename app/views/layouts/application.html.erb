@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield(:page_title) %></title>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application'  %>
+    <%= yield(:header) %>
+  </head>
+
+  <body>
+    <%= render 'layouts/header' %>
+      <%= yield %>
+    <%= render 'layouts/footer' %>
+  </body>
+</html>

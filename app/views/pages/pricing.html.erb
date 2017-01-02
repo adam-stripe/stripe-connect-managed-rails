@@ -1,0 +1,30 @@
+<%= content_for :page_title, 'Fundraising Marketplace | Pricing' %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 text-center topspace-lg">
+      <h1>Simple, transparent pricing</h1>
+      <div class="topspace feature">
+        <h2 class="price">10%</h2>
+        <small>Fee on funds raised</small>
+        <hr>
+        <div class="row">
+          <div class="col-md-4">
+            <h3 class="price-sm raised">$0</h3>
+            <small>Refunds</small>
+          </div>
+          <div class="col-md-4">
+            <h3 class="price-sm raised">$0</h3>
+            <small>Chargebacks</small>
+          </div>
+          <div class="col-md-4">
+            <h3 class="price-sm raised">$0</h3>
+            <small>Setup</small>
+          </div>
+        </div>
+      </div>
+      <p class="topspace-lg">
+        <%= link_to "Create your own fundraising campaign", new_user_registration_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
+      </p>
+    </div>
+  </div>
+</div>

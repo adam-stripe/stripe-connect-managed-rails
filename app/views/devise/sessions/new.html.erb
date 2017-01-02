@@ -1,0 +1,34 @@
+<%= content_for :page_title, 'Fundraising Marketplace | Sign in' %>
+<div class="container">
+  <div class="row topspace-lg">
+    <div class="col-md-6 col-md-offset-3">
+      <h1 class="text-center">Sign in to your account</h1>
+      <%= devise_error_messages! %>
+      <%= render 'layouts/messages' %>
+      <div class="panel panel-default topspace-lg">
+        <div class="panel-body placeholder">
+          <%= form_for(resource, as: resource_name, 
+            url: session_path(resource_name)) do |f| %>
+            <div class="form-group">
+              <%= f.label :email %>
+              <%= f.email_field :email, autofocus: true, class: "form-control input-lg", placeholder: "Email address" %>
+            </div>
+            <div class="form-group">
+              <%= f.label :password %>
+              <%= f.password_field :password, autocomplete: "off", class: "form-control input-lg", placeholder: "Password" %>
+            </div>
+            <div class="form-group">
+              <%= f.button "Log in", class: "btn btn-lg btn-block btn-primary btn-custom", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Logging in..."} %>
+            </div>
+          <% end %>
+          <div class="text-center">
+            <%= link_to "Forgot your password?", new_user_password_path %>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        Need an account? <%= link_to "Sign up", new_user_registration_path %>
+      </div>
+    </div>
+  </div>
+</div>
