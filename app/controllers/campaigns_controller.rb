@@ -79,6 +79,9 @@ class CampaignsController < ApplicationController
 
       # Sort the results
       @transactions = balances.sort_by {|date,net| date}
+    else
+      flash[:success] = "Create a fundraising campaign to get started."
+      redirect_to new_campaign_path
     end
     
   end

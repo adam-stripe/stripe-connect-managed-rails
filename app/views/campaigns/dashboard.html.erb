@@ -5,40 +5,38 @@
       <%= render 'layouts/messages' %>
     </div>
   </div>
-  <% if current_user.stripe_account %>
-    <% unless @stripe_account.verification.fields_needed.empty? %>
-      <%= render 'verification' %>
-    <% end %>
+  <% unless @stripe_account.verification.fields_needed.empty? %>
+    <%= render 'verification' %>
+  <% end %>
 
-    <h2 class="page-header"><i class="fa fa-line-chart purple"></i>  My Campaigns</h2>
-    <% unless @campaigns.empty? %>
-      <%= render 'campaigns' %>
-    <% else %>
-      <%= link_to "Create your first fundraising campaign to get started", new_campaign_path %>.
-    <% end %>
+  <h2 class="page-header"><i class="fa fa-line-chart purple"></i>  My Campaigns</h2>
+  <% unless @campaigns.empty? %>
+    <%= render 'campaigns' %>
+  <% else %>
+    <%= link_to "Create your first fundraising campaign to get started", new_campaign_path %>.
+  <% end %>
 
-    <h2 class="page-header">
-      <i class="fa fa-table purple"></i>  Transaction balance 
-      <small class="pull-right"><span class="raised"><%= format_amount(@balance.pending[0].amount) %></span> pending</small>
-    </h2>
-    <% unless @transactions.empty? %>
-      <%= render 'transactions' %>
-    <% else %>
-      No transactions yet. 
-    <% end %>
+  <h2 class="page-header">
+    <i class="fa fa-table purple"></i>  Transaction balance 
+    <small class="pull-right"><span class="raised"><%= format_amount(@balance.pending[0].amount) %></span> pending</small>
+  </h2>
+  <% unless @transactions.empty? %>
+    <%= render 'transactions' %>
+  <% else %>
+    No transactions yet. 
+  <% end %>
 
-    <h2 class="page-header"><i class="fa fa-dollar purple"></i> Donations received</h2>
-    <% unless @payments.data.empty? %>
-      <%= render 'charges' %>
-    <% else %>
-      No donations yet :(
-    <% end %>
+  <h2 class="page-header"><i class="fa fa-dollar purple"></i> Donations received</h2>
+  <% unless @payments.data.empty? %>
+    <%= render 'charges' %>
+  <% else %>
+    No donations yet :(
+  <% end %>
 
-    <h2 class="page-header"><i class="fa fa-bank purple"></i> Transfers</h2>
-    <% unless @transfers.data.empty? %>
-      <%= render 'transfers' %>
-    <% else %>
-      No transfers yet.
-    <% end %>
+  <h2 class="page-header"><i class="fa fa-bank purple"></i> Transfers</h2>
+  <% unless @transfers.data.empty? %>
+    <%= render 'transfers' %>
+  <% else %>
+    No transfers yet.
   <% end %>
 </div>
