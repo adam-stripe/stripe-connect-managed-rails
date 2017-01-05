@@ -19,9 +19,7 @@
         <div class="col-md-12">
           <div class="form-group">
             <%= f.label :account_type, "Account Type" %>
-            <select class="form-control input-lg" id="account_type" name="stripe_account[account_type]">
-              <option value="individual">Individual</option>
-            </select>
+            <%= f.select(:account_type, options_for_select([["Individual","individual"], ["Company","company"]], @stripe_account[:account_type]), {}, { class: "form-control input-lg" }) %>
           </div>
         </div>
       </div>
@@ -29,40 +27,19 @@
         <div class="col-md-4">
           <div class="form-group">
             <label>DOB Month</label>
-            <select class="form-control input-lg" id="dob_month" name="stripe_account[dob_month]">
-              <option value="01">January</option>
-              <option value="02">February</option>
-              <option value="03">March</option>
-              <option value="04">April</option>
-              <option value="05">May</option>
-              <option value="06">June</option>
-              <option value="07">July</option>
-              <option value="08">August</option>
-              <option value="09">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
-            </select>
+            <%= f.select(:dob_month, options_for_select([["January", "1"],["February", "2"],["March", "3"],["April", "4"],["May", "5"],["June", "6"],["July", "7"],["August", "8"],["September", "9"],["October", "10"],["November", "11"],["December", "12"]], @stripe_account[:dob_month]), {}, { class: "form-control input-lg" }) %>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label>DOB Day</label>
-            <select class="form-control input-lg" id="dob_day" name="stripe_account[dob_day]">
-              <% (1..31).each do | n | %>
-                <option value="<%= n %>"><%= n %></option>
-              <% end %>
-            </select>
+            <%= f.select(:dob_day, options_for_select((1..31).each{|n| [n, n]}, @stripe_account[:dob_day]), {}, { class: "form-control input-lg" }) %>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label>DOB Year</label>
-            <select class="form-control input-lg" id="dob_day" name="stripe_account[dob_year]">
-              <% (1916..1998).each do | n | %>
-                <option value="<%= n %>"><%= n %></option>
-              <% end %>
-            </select>
+            <%= f.select(:dob_year, options_for_select((1912..2016).each{|n| [n, n]}, @stripe_account[:dob_year]), {}, { class: "form-control input-lg" }) %>
           </div>
         </div>
       </div>
@@ -70,7 +47,9 @@
         <div class="col-md-12">
           <div class="form-group">
             <%= f.check_box :tos %>
-            <%= f.label :tos, "I agree to the terms of service" %>
+            <%= f.label :tos do %>
+              I agree to the  <%= link_to "terms of service", terms_path %>.
+            <% end %>
           </div>
         </div>
       </div>

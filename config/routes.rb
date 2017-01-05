@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: "campaigns#home"
   get 'dashboard', to: 'campaigns#dashboard'
   get 'pricing', to: 'pages#pricing'
+  get 'terms', to: 'pages#terms'
 
   resources :campaigns
 
