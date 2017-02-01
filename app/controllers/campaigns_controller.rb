@@ -22,7 +22,7 @@ class CampaignsController < ApplicationController
     if @campaign.save
       flash[:notice] = "Your campaign has been created!"
       redirect_to @campaign
-    else 
+    else
       flash.now[:danger] = @campaign.errors.full_messages
       random_image
       render :new
@@ -62,7 +62,7 @@ class CampaignsController < ApplicationController
       # Retrieve transactions with an available_on date in the future
       transactions = Stripe::BalanceTransaction.all(
         {
-          limit: 100, 
+          limit: 100,
           available_on: {gte: Time.now.to_i}
         },{ stripe_account: current_user.stripe_account })
 
@@ -83,12 +83,25 @@ class CampaignsController < ApplicationController
       flash[:success] = "Create a fundraising campaign to get started."
       redirect_to new_campaign_path
     end
-    
+
   end
 
   def edit
-    random_image
     @campaign = Campaign.find(params[:id])
+    random_image
+
+    if current_user
+      # owns campaign
+      if current_user.id == @campaign.user_id
+        render :edit
+      else
+      # doesn't own campaign
+      redirect_to @campaign
+      end
+    else
+      redirect_to @campaign
+    end
+    
   end
 
   def update
@@ -96,7 +109,7 @@ class CampaignsController < ApplicationController
     if @campaign.update_attributes(campaign_params)
       flash[:notice] = "Your campaign has been updated!"
       redirect_to @campaign
-    else 
+    else
       flash.now[:danger] = @campaign.errors.full_messages
       random_image
       render :edit
