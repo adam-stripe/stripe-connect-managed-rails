@@ -1,4 +1,6 @@
 class BankAccountsController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create]
+
   def new
     # Redirect if no stripe account yet
     unless current_user.stripe_account
@@ -9,7 +11,7 @@ class BankAccountsController < ApplicationController
       # Retrieve the account object for this user
       @account = Stripe::Account.retrieve(current_user.stripe_account)
       @full_name = "#{@account.legal_entity.first_name}" + " #{@account.legal_entity.last_name}"
-    
+
     rescue Stripe::RateLimitError => e
       flash[:alert] = e.message
       render 'new'
@@ -30,7 +32,7 @@ class BankAccountsController < ApplicationController
       # Something else failed in the app. Maybe log or send an email?
       flash[:alert] = "Sorry, we weren't able to retrieve this account."
       render 'new'
-    end 
+    end
   end
 
   def create
@@ -42,10 +44,10 @@ class BankAccountsController < ApplicationController
 
           # Create the bank account
           account.external_accounts.create(external_account: params[:stripeToken])
-          
+
           flash[:success] = "Your bank account has been added!"
           redirect_to dashboard_path
-        
+
         # Handle exceptions
         rescue Stripe::RateLimitError => e
           flash[:alert] = e.message
