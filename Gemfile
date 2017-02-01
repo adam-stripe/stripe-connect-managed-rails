@@ -34,19 +34,29 @@ gem 'bootstrap-sass', '~> 3.3.6'
 # Use Font Awesome to make pretty icons
 gem 'font-awesome-rails'
 # Devise for use auth
-gem 'devise', '4.0.0.rc2'
+gem 'devise', '4.2'
 # Confirmable modals
 gem 'data-confirm-modal'
 # Mailgun to gun the mails
-gem 'mailgun-ruby'
+gem 'mailgun-ruby', '~>1.1.2'
 # Unsplash to unsplash random images
 gem 'unsplash'
+# Add Stripe events
+gem 'stripe_event'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
+  # Add better errors for more descriptive errors
+  gem 'better_errors'
+  # Add minitests for testing
+  gem 'minitest-rails'
+  # Make the fake Stripe data
+  gem 'stripe-ruby-mock', '~> 2.4.0', :require => 'stripe_mock'
+  # Make the fake Stripe data
+
 end
 
 group :development do
@@ -58,7 +68,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-group :production do 
+group :production do
   gem 'pg', '~> 0.18.4'
 end
 
