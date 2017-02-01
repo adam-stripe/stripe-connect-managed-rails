@@ -13,6 +13,16 @@ class CampaignsControllerTest < ActionDispatch::IntegrationTest
     assert_response 302
   end
 
+  test "should not be able to view dashboard" do
+    get '/dashboard'
+    assert_response 302
+  end
+
+  test "should show a campaign" do
+    get '/campaigns', params: { id: 1 }
+    assert :success
+  end
+
   # test "should not be able to open edit view" do
   #   sign_in(user: @confirmed_user, password: @password)
   #   create_campaign
