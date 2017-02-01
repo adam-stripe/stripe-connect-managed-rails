@@ -5,6 +5,18 @@ Rails.application.configure do
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs. Don't rely on the data there!
+
+    config.action_mailer.smtp_settings = {
+      :port           => ENV['MAILGUN_SMTP_PORT'],
+      :address        => ENV['MAILGUN_SMTP_SERVER'],
+      :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+      :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+      :domain         => 'sandboxeb6b24c990f94f6984a2245a7f0cd7e8.mailgun.org', #eg: 'yourappname.herokuapp.com'
+      :authentication => :plain,
+    }
+    config.action_mailer.default_url_options = {
+      :host => 'http://1f9fc0b5.ngrok.io'
+    }
   config.cache_classes = true
 
   # Do not eager load code on boot. This avoids loading your whole application
