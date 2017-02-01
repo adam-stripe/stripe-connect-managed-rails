@@ -28,13 +28,9 @@ class ActiveSupport::TestCase
   end
 
   def create_campaign
-    @campaign = @confirmed_user.campaigns.create(user_id: @confirmed_user.id,
-                                                 title: "Fund my trip to the moon",
-                                                 description: "I'm going to the moon")
+    @campaign = Campaign.create(user_id: @confirmed_user.id,
+                                title: "Fund my trip to the moon",
+                                description: "I'm going to the moon")
     @campaign.save
   end
-end
-
-class ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
 end
