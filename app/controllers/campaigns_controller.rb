@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :dashboard]
+  before_action :authenticate_user!, only: [:new, :create, :dashboard, :edit]
 
   def home
     @campaigns = Campaign.where(active: true).order(created_at: :desc)
@@ -87,21 +87,8 @@ class CampaignsController < ApplicationController
   end
 
   def edit
-    @campaign = Campaign.find(params[:id])
     random_image
-
-    if current_user
-      # owns campaign
-      if current_user.id == @campaign.user_id
-        render :edit
-      else
-      # doesn't own campaign
-      redirect_to @campaign
-      end
-    else
-      redirect_to @campaign
-    end
-    
+    @campaign = Campaign.find_by(params[:id], user_id: current_user.id)
   end
 
   def update
