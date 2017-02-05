@@ -3,6 +3,12 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'minitest/autorun'
 require 'stripe_mock'
 
+require "minitest/reporters"
+Minitest::Reporters.use!(
+  Minitest::Reporters::ProgressReporter.new,
+  ENV,
+  Minitest.backtrace_filter)
+  
 class ActiveSupport::TestCase
 
   def setup

@@ -52,7 +52,7 @@ group :development, :test do
   # Add better errors for more descriptive errors
   gem 'better_errors'
   # Add minitests for testing
-  gem 'minitest-rails'
+  gem 'minitest-reporters'
   # Make the fake Stripe data
   gem 'stripe-ruby-mock', '~> 2.4.0', :require => 'stripe_mock'
   # Make the fake Stripe data
