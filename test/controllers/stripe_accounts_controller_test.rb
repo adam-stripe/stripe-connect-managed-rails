@@ -6,3 +6,5 @@ class StripeAccountsControllerTest < ActionDispatch::IntegrationTest
     get '/stripe_accounts/new'
     assert_redirected_to user_session_path
   end
+
+end
