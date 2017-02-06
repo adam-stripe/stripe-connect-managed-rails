@@ -22,22 +22,9 @@
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <label><span id="card_type"></span> Card Number</label>
-            <input class="form-control input-lg" id="number" type="tel" size="20" data-stripe="number" placeholder="4242 4242 4242 4242">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-7">
-          <div class="form-group">
-            <label>Expiry</label>
-            <input class="form-control input-lg" id="cc_exp" type="tel" size="2" data-stripe="exp" placeholder="MM / YY">
-          </div>
-        </div>
-        <div class="col-md-5">
-          <div class="form-group">
-            <label>CVC</label>
-            <input class="form-control input-lg" id="cvc" type="tel" size="4" data-stripe="cvc" placeholder="555" autocomplete="off">
+            <span>Card</span>
+            <span id="card" class="form-control input-lg field">
+              <!-- a Stripe element will be inserted here. -->
           </div>
         </div>
       </div>
@@ -52,3 +39,5 @@
     </form>
   </div>
 </div>
+
+<%= javascript_include_tag "paymentform.js" %>

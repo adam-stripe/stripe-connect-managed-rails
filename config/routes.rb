@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'campaigns#dashboard'
   get 'pricing', to: 'pages#pricing'
   get 'terms', to: 'pages#terms'
+  post 'webhooks', to: 'webhooks#webhook'
 
   resources :campaigns
 
@@ -12,4 +13,5 @@ Rails.application.routes.draw do
   resources :charges
 
   resources :bank_accounts
+
 end

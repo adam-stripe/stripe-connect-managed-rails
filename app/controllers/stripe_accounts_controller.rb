@@ -13,18 +13,19 @@ class StripeAccountsController < ApplicationController
         # Create the account object in Stripe
         account = Stripe::Account.create(
           managed: true,
+          email: current_user.email,
           legal_entity: {
             first_name: account_params[:first_name].capitalize,
             last_name: account_params[:last_name].capitalize,
-            type: account_params[:account_type], 
+            type: account_params[:account_type],
             dob: {
-              day: account_params[:dob_day], 
-              month: account_params[:dob_month], 
+              day: account_params[:dob_day],
+              month: account_params[:dob_month],
               year: account_params[:dob_year]
             }
           },
           tos_acceptance: {
-            date: Time.now.to_i, 
+            date: Time.now.to_i,
             ip: request.remote_ip
           }
         )
@@ -33,7 +34,7 @@ class StripeAccountsController < ApplicationController
       current_user.stripe_account = account.id
 
       if current_user.save
-        flash[:success] = "Your seller account has been created! 
+        flash[:success] = "Your seller account has been created!
           Next, add a bank account where you'd like to receive transfers below."
         redirect_to new_bank_account_path
       else
@@ -157,11 +158,11 @@ class StripeAccountsController < ApplicationController
   private
     def account_params
       params.require(:stripe_account).permit(
-        :first_name, :last_name, :account_type, :dob_month, :dob_day, :dob_year, :tos, :legal_entity, 
-        :'legal_entity.first_name', :'legal_entity.last_name', :'legal_entity.address.city', 
+        :first_name, :last_name, :account_type, :dob_month, :dob_day, :dob_year, :tos, :legal_entity,
+        :'legal_entity.first_name', :'legal_entity.last_name', :'legal_entity.address.city',
         :'legal_entity.address.line1', :'legal_entity.address.postal_code',
         :'legal_entity.address.state', :'legal_entity.dob.day',
-        :'legal_entity.dob.month', :'legal_entity.dob.year', :'legal_entity.ssn_last_4', 
+        :'legal_entity.dob.month', :'legal_entity.dob.year', :'legal_entity.ssn_last_4',
         :'legal_entity.personal_id_number', :'legal_entity.type', :'legal_entity.verification.document',
       )
     end
