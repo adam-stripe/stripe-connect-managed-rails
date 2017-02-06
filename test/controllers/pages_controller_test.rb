@@ -6,7 +6,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get '/pricing'
     assert :success
   end
-  
+
   test "should load terms page" do
     get '/terms'
     assert :success

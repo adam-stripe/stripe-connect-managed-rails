@@ -8,7 +8,7 @@ Minitest::Reporters.use!(
   Minitest::Reporters::ProgressReporter.new,
   ENV,
   Minitest.backtrace_filter)
-  
+
 class ActiveSupport::TestCase
 
   def setup
@@ -17,7 +17,7 @@ class ActiveSupport::TestCase
                                   password: @password)
 
     @unconfirmed_user = User.create(email: "#{rand(50000)}@example.com",
-                          password: @password)
+                                    password: @password)
   end
 
   def sign_in(user:, password:)
@@ -31,7 +31,6 @@ class ActiveSupport::TestCase
                                 title: "Fund my trip to the moon",
                                 description: "I'm going to the moon")
 
-    @campaign.save
   end
 
   def create_stripe_account
@@ -96,7 +95,6 @@ class ActiveSupport::TestCase
   def create_bank_account(connected_account, stripeToken)
     @account = Stripe::Account.retrieve(connected_account)
     @bank_account = @account.external_accounts.create(external_account: stripeToken)
-    @bank_account.save
   end
 
 end
