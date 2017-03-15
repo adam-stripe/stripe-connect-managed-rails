@@ -2,7 +2,7 @@
 <div class="container">
   <div class="row topspace-lg">
     <div class="col-md-6 col-md-offset-3">
-      <h1 class="text-center">Sign up for Fundraising Marketplace</h1>
+      <h1 class="text-center">Sign up</h1>
       <%= devise_error_messages! %>
       <%= render 'layouts/messages' %>
       <div class="panel panel-default topspace-lg">
@@ -23,9 +23,6 @@
             <div class="form-group">
               <%= f.button "Sign up", class: "btn btn-primary btn-lg btn-block btn-custom", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Signing up..."} %>
             </div>
-            <% if params[:plan].present? %>
-              <input type="hidden" name="plan" value="<%= params[:plan] %>">
-            <% end %>
           <% end %>
         </div>
       </div>

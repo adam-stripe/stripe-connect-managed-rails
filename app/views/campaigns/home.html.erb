@@ -1,4 +1,4 @@
-<%= content_for :page_title, 'Fundraising Marketplace' %>
+<%= content_for :page_title, 'Stripe Connect Example App' %>
 <div class="home-hero">
   <div class="container">
     <div class="row">
@@ -8,9 +8,9 @@
         <h3>A <a href="https://stripe.com/connect">Stripe Connect</a> example app</h3>
         <p class="topspace-lg">
           <% if user_signed_in? %>
-            <%= link_to "Create your own fundraiser", new_campaign_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
+            <%= link_to "Create", new_campaign_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
           <% else %>
-            <%= link_to "Create your own fundraiser", new_user_registration_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
+            <%= link_to "Create", new_user_registration_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
           <% end %>
         </p>
       </div>
