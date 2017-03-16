@@ -1,25 +1,29 @@
-<form action="/charges" method="POST" id="checkout_form">
-  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="form-group">
-        <label>Cardholder Name</label>
-        <input class="form-control input-lg" id="name" name="name" type="text" data-stripe="name" placeholder="Jimmy Dean">
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form action="/charges" method="POST" id="checkout_form">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Cardholder Name</label>
+            <input class="form-control input-lg" id="name" name="name" type="text" data-stripe="name" placeholder="Jimmy Dean">
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="form-group">
-        <label>Donation amount</label>
-        <input class="form-control input-lg" id="amount" name="amount" type="text" placeholder="$20.00">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Donation amount</label>
+            <input class="form-control input-lg" id="amount" name="amount" type="text" placeholder="$20.00">
+          </div>
+        </div>
       </div>
-    </div>
+      <input type="hidden" id="stripeToken" name="stripeToken" />
+      <input type="hidden" name="campaign" value="<%= @campaign.id %>">
+      <button id="checkoutBtn" class="btn btn-lg btn-block btn-custom btn-primary">Make a donation</button>
+    </form>
   </div>
-  <input type="hidden" id="stripeToken" name="stripeToken" />
-  <input type="hidden" name="campaign" value="<%= @campaign.id %>">
-  <button id="checkoutBtn" class="btn btn-lg btn-block btn-custom btn-primary">Make a donation</button>
-</form>
+</div>
 <p class="text-center topspace">
   <a href="?elements=true">Use Stripe Elements</a>
 </p>
