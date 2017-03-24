@@ -201,11 +201,14 @@ h1, h2, h3, h4 {
 .placeholder label {
   display: none !important;
 }
-.form-control:focus {
+.form-control:focus, .StripeElement--focus {
   border-color: #939393;
   box-shadow: none;
 }
 .form-control, .has-error .form-control:focus {
   border-width: 2px;
   box-shadow: none;
+}
+#card-errors {
+  display: none;
 }

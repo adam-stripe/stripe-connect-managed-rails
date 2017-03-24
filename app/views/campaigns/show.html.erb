@@ -1,72 +1,84 @@
 <%= content_for :page_title, "#{@campaign.title.titleize} | Fundraising Marketplace" %>
 <% content_for(:header) do %>
   <% if params[:elements].present? %>
-    <script src="https://js.stripe.com/v2/"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.4.1/jquery.payment.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
-      // Set your Stripe publishable API key here
-      Stripe.setPublishableKey("<%= ENV['PUBLISHABLE_KEY'] %>");
+      $(function(){
+        // Set your Stripe publishable API key here
+        var stripe = Stripe("<%= ENV['PUBLISHABLE_KEY'] %>");
 
-      $(function() {
-        var $form = $('#payment-form');
-        $form.submit(function(event) {
-          // Clear any errors
-          $form.find('.has-error').removeClass('has-error');
+        var elements = stripe.elements();
+
+        // Style the payment element
+        var style = {
+          base: {
+            fontSize: "16px"
+          }
+        };
+
+        // Create an instance of the card Element
+        var card = elements.create('card', {style: style});
+
+        // Add an instance of the card Element into the `card-element` <div>
+        card.mount('#card-element');
+
+        // Listen for errors
+        card.addEventListener('change', function(event) {
+          var displayError = document.getElementById('card-errors');
+          if (event.error) {
+            displayError.textContent = event.error.message;
+            displayError.style.display = 'block';
+          } else {
+            displayError.textContent = '';
+            displayError.style.display = 'none';
+          }
+        });
+
+        // Create a token
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
 
           // Validate the form isn't empty before requesting a token
-          invalidForm = false;
-          $('#payment-form input').each(function() {
-            if ($(this).val() == '') { 
-              $('#'+this.id).parent('.form-group').addClass('has-error');
-              invalidForm = true;
-            }
-          });
-          if (invalidForm){
+          if (document.getElementById('amount').value == '' || document.getElementById('name').value == ''){
+            
             return false;
           }
 
-          // Disable the submit button to prevent repeated clicks:
-          $form.find('.submit').prop('disabled', true).html("<i class='fa fa-spinner fa-spin'></i> Making payment...");
-
-          // Request a token from Stripe:
-          Stripe.card.createToken($form, stripeResponseHandler);
-          
-          // Prevent the form from being submitted:
-          return false;
+          var submit_btn = document.getElementById('submit_payment');
+          var errorElement = document.getElementById('card-errors');
+          submit_btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Making donation...";
+          submit_btn.className += " disabled";
+          stripe.createToken(card).then(function(result) {
+            if (result.error) {
+              errorElement.textContent = result.error.message;
+              errorElement.style.display = 'block';
+              submit_btn.innerHTML = "Make a donation";
+              submit_btn.classList.remove("disabled");
+            } else {
+              // Reset errors
+              errorElement.textContent = '';
+              errorElement.style.display = 'none';
+              // Send the token to your server
+              stripeTokenHandler(result.token);
+            }
+          });
         });
 
-        // Formatting
-        $('#number').payment('formatCardNumber');
-        $('#cc_exp').payment('formatCardExpiry');
+        // Submit the token
+        function stripeTokenHandler(token) {
+          // Insert the token ID into the form so it gets submitted to the server
+          var form = document.getElementById('payment-form');
+          var hiddenInput = document.createElement('input');
+          hiddenInput.setAttribute('type', 'hidden');
+          hiddenInput.setAttribute('name', 'stripeToken');
+          hiddenInput.setAttribute('value', token.id);
+          form.appendChild(hiddenInput);
 
-        // Determine & display the card brand
-        $('#number').keyup(function() {
-          card_type = $.payment.cardType($('#number').val());
-          card_type ? $('#card_type').html("<i class='text-success fa fa-cc-"+card_type+"'></i>") : $('#card_type').html("");
-        });
-      });
-
-      function stripeResponseHandler(status, response) {
-        var $form = $('#payment-form');
-
-        if (response.error) {
-          // Show the errors on the form
-          $form.find('.payment-errors').text(response.error.message).addClass('alert alert-danger');
-          $form.find('#' + response.error.param).parent('.form-group').addClass('has-error');
-          $form.find('button').prop('disabled', false).text('Pay $20'); // Re-enable submission
-        } 
-        else { // Token was created!
-          $form.find('.submit').html("<i class='fa fa-check'></i> Payment accepted");
-          // Get the token ID:
-          var token = response.id;
-
-          // Insert the token and name into the form so it gets submitted to the server:
-          $form.append($('<input type="hidden" name="stripeToken" />').val(token));
-
-          // Submit the form:
-          $form.get(0).submit();
+          // Submit the form
+          form.submit();
         }
-      }
+      });
     </script>
   <% else %>
     <script src="https://checkout.stripe.com/checkout.js"></script>
