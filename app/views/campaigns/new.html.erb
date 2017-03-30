@@ -10,7 +10,7 @@
             <%= form_for @campaign do | campaign | %>
               <div class="form-group">
                 <%= campaign.label :title, "Title" %>
-                <%= campaign.text_field :title, class: "form-control input-lg", placeholder: "Help me send my dog to obedience school!", autofocus: true %>
+                <%= campaign.text_field :title, class: "form-control input-lg", placeholder: "Help me pay my college tuition!", autofocus: true %>
               </div>
               <div class="form-group">
                 <%= campaign.label :goal, "Goal" %>
@@ -21,7 +21,7 @@
               </div>
               <div class="form-group">
                 <%= campaign.label :description, "Description" %>
-                <%= campaign.text_area :description, class: "form-control input-lg", placeholder: "I'd like to send my dog, Lucky, to obedience school. The cost for the course is $200, and any donations help!"%>
+                <%= campaign.text_area :description, class: "form-control input-lg", placeholder: "My tuition is expensive! Please donate if you want to help me pay it."%>
               </div>
               <div class="form-group">
                 <%= campaign.label :image, "Select an image (provided by Unsplash.it)" %>

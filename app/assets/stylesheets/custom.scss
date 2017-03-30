@@ -49,6 +49,9 @@ h1, h2, h3, h4 {
     background-color: #fff;
     color: #000;
   }
+  .navbar-collapse {
+    background-color: #fff;
+  }
   .fa {
     margin-right: 8px;
   }
@@ -161,7 +164,7 @@ h1, h2, h3, h4 {
 .highlight {
   background-color: #CCE6FF;
 }
-/*flash*/
+/* flash */
 .alert-danger, .alert-error {
   background-color: #ef5350;
   border-color: #eed3d7;
@@ -211,4 +214,12 @@ h1, h2, h3, h4 {
 }
 #card-errors {
   display: none;
+}
+/* media queries */
+@media only screen 
+and (min-device-width : 375px) 
+and (max-device-width : 667px) {
+  .home-hero h1 {
+    font-size: 60px;
+  }
 }

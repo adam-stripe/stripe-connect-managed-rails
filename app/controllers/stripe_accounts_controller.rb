@@ -33,7 +33,7 @@ class StripeAccountsController < ApplicationController
       current_user.stripe_account = account.id
 
       if current_user.save
-        flash[:success] = "Your seller account has been created! 
+        flash[:success] = "Your account has been created! 
           Next, add a bank account where you'd like to receive transfers below."
         redirect_to new_bank_account_path
       else
@@ -69,7 +69,7 @@ class StripeAccountsController < ApplicationController
   def edit
     # Check for a valid account ID
     unless params[:id] && params[:id].eql?(current_user.stripe_account)
-      flash[:error] = "No seller account specified"
+      flash[:error] = "No Stripe account specified"
       redirect_to dashboard_path
     end
 

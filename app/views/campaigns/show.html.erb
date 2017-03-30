@@ -12,7 +12,7 @@
         // Style the payment element
         var style = {
           base: {
-            fontSize: "16px"
+            fontSize: "14px"
           }
         };
 
@@ -41,7 +41,6 @@
 
           // Validate the form isn't empty before requesting a token
           if (document.getElementById('amount').value == '' || document.getElementById('name').value == ''){
-            
             return false;
           }
 
@@ -167,6 +166,9 @@
       <% else %>
         <%= render 'checkoutform' %>
       <% end %>
+      <p class="text-center">
+        <a href="https://stripe.com/docs/testing#cards" target="_blank">Test card numbers</a>
+      </p>
       <% if current_user && @campaign.user_id.eql?(current_user.id) && @campaign.active %>
         <h3 class="page-header text-center"><i class="fa fa-edit purple"></i> Your campaign</h3>
         <p>

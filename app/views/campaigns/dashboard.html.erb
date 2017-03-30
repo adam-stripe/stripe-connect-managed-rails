@@ -18,7 +18,7 @@
 
   <h2 class="page-header">
     <i class="fa fa-table purple"></i>  Transaction balance 
-    <small class="pull-right"><span class="raised"><%= format_amount(@balance.pending[0].amount) %></span> pending</small>
+    <br><small><span class="raised"><%= format_amount(@balance.pending[0].amount) %></span> pending</small>
   </h2>
   <% unless @transactions.empty? %>
     <%= render 'transactions' %>
