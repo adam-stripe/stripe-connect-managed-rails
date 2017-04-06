@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'campaigns#dashboard'
   get 'pricing', to: 'pages#pricing'
   get 'terms', to: 'pages#terms'
+  get 'stripe_accounts/full', to: 'stripe_accounts#full'
 
   resources :campaigns
 
