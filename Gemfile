@@ -34,7 +34,7 @@ gem 'bootstrap-sass', '~> 3.3.6'
 # Use Font Awesome to make pretty icons
 gem 'font-awesome-rails'
 # Devise for use auth
-gem 'devise', '4.0.0.rc2'
+gem 'devise', '~> 4.2', '>= 4.2.1'
 # Confirmable modals
 gem 'data-confirm-modal'
 # Mailgun to gun the mails

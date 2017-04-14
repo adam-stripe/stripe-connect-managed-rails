@@ -58,7 +58,7 @@ GEM
     data-confirm-modal (1.2.0)
       railties (>= 3.0)
     debug_inspector (0.0.2)
-    devise (4.0.0.rc2)
+    devise (4.2.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
@@ -184,7 +184,7 @@ GEM
     unsplash (1.4.1)
       httparty (~> 0.13.5)
       oauth2 (~> 1)
-    warden (1.2.6)
+    warden (1.2.7)
       rack (>= 1.0)
     web-console (3.3.1)
       actionview (>= 5.0)
@@ -203,7 +203,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   data-confirm-modal
-  devise (= 4.0.0.rc2)
+  devise (~> 4.2, >= 4.2.1)
   font-awesome-rails
   jbuilder (~> 2.5)
   jquery-rails
@@ -223,4 +223,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.11.2
+   1.14.3
