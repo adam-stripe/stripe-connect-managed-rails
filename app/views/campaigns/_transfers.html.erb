@@ -13,7 +13,13 @@
         <% @transfers.each do |transfer| %>
           <tr>
             <td><%= transfer.id %></td>
-            <td><%= transfer.bank_account.bank_name %> ending in <%= transfer.bank_account.last4%></td>
+            <td>
+              <% if transfer.type.eql?('bank_account') %>
+                <%= transfer.bank_account.bank_name %> ending in <%= transfer.bank_account.last4 %>
+              <% elsif transfer.type.eql?('card') %>
+                <%= transfer.card.brand %> ending in <%= transfer.card.last4 %>
+              <% end %>
+            </td>
             <td><%= format_amount(transfer.amount) %></td>
             <td><%= format_date(transfer.date) %></td>
           </tr>

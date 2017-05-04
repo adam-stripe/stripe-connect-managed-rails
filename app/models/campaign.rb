@@ -1,5 +1,5 @@
 class Campaign < ApplicationRecord
-  belongs_to :users
+  belongs_to :user
 
   validates :title,
   presence: true, length: { minimum: 5, maximum: 100 }

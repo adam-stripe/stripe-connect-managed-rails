@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161228223505) do
+ActiveRecord::Schema.define(version: 20170502170520) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer  "user_id"
@@ -42,13 +42,19 @@ ActiveRecord::Schema.define(version: 20161228223505) do
     t.integer  "dob_month"
     t.integer  "dob_day"
     t.integer  "dob_year"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.string   "address_city"
     t.string   "address_state"
     t.string   "address_line1"
     t.string   "address_postal"
     t.boolean  "tos"
+    t.string   "ssn_last_4"
+    t.string   "business_name"
+    t.string   "business_tax_id"
+    t.string   "personal_id_number"
+    t.string   "verification_document"
+    t.string   "acct_id"
   end
 
   create_table "users", force: :cascade do |t|

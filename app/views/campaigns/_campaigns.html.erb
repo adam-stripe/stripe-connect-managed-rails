@@ -5,7 +5,7 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-md-2 col-xs-12">
-              <%= image_tag("#{campaign.image}?q=75&fm=jpg&w=400&fit=max", class: "img-responsive img-thumbnail") %>
+              <%= image_tag("#{campaign.image}_sm.jpg", class: "img-responsive img-thumbnail") %>
             </div>
             <div class="col-md-8">
               <h2><%= link_to campaign.title.titleize, campaign_path(campaign) %></a></h2>

@@ -5,13 +5,13 @@ class ChargesController < ApplicationController
     # Check for a stripeToken
     unless charge_params[:stripeToken]
       flash[:error] = "No payment information submitted."
-      redirect_back
+      redirect_back(fallback_location: root_path) and return
     end
     
     # Check for a valid campaign ID
     unless charge_params[:campaign] && Campaign.exists?(charge_params[:campaign])
       flash[:error] = "The campaign you specified doesn't exist."
-      redirect_back
+      redirect_back(fallback_location: root_path) and return
     end
 
     # Retrieve the campaign
@@ -35,7 +35,7 @@ class ChargesController < ApplicationController
         }
       )
 
-      # Save the charge details for later use
+      # Save the charge details locally for later use
       local_charge = Charge.create(
         charge_id: charge.id,
         amount: amount,
@@ -50,30 +50,9 @@ class ChargesController < ApplicationController
       # Let the customer know the payment was successful
       flash[:success] = "Thanks for your donation! Your transaction ID is #{charge.id}."
       redirect_to campaign_path(campaign)
-    rescue Stripe::CardError => e
-      # Since it's a decline, Stripe::CardError will be caught
-      flash[:error] = e.message
-      redirect_to campaign_path(campaign)
-    rescue Stripe::RateLimitError => e
-      # Too many requests made to the API too quickly
-      flash[:error] = e.message
-      redirect_to campaign_path(campaign)
-    rescue Stripe::InvalidRequestError => e
-      # Invalid parameters were supplied to Stripe's API
-      flash[:error] = e.message
-      redirect_to campaign_path(campaign)
-    rescue Stripe::AuthenticationError => e
-      # Authentication with Stripe's API failed
-      # (maybe you changed API keys recently)
-      flash[:error] = e.message
-      redirect_to campaign_path(campaign)
-    rescue Stripe::APIConnectionError => e
-      # Network communication with Stripe failed
-      flash[:error] = e.message
-      redirect_to campaign_path(campaign)
+
+    # Handle exceptions from Stripe
     rescue Stripe::StripeError => e
-      # Display a very generic error to the user, and maybe send
-      # yourself an email
       flash[:error] = e.message
       redirect_to campaign_path(campaign)
     rescue => e
@@ -91,39 +70,25 @@ class ChargesController < ApplicationController
       # Validate that the user should be able to view this charge
       check_destination(@charge)
 
+      # Get the campaign from the metadata on the charge object
       @campaign = Campaign.find(@charge.metadata.campaign)
-    rescue Stripe::RateLimitError => e
-      # Too many requests made to the API too quickly
-      flash[:error] = e.message
-      render :show
-    rescue Stripe::InvalidRequestError => e
-      # Invalid parameters were supplied to Stripe's API
-      flash[:error] = e.message
-      render :show
-    rescue Stripe::AuthenticationError => e
-      # Authentication with Stripe's API failed
-      # (maybe you changed API keys recently)
-      flash[:error] = e.message
-      render :show
-    rescue Stripe::APIConnectionError => e
-      # Network communication with Stripe failed
-      flash[:error] = e.message
-      render :show
+    
+    # Handle exceptions from Stripe
     rescue Stripe::StripeError => e
-      # Display a very generic error to the user, and maybe send
-      # yourself an email
       flash[:error] = e.message
-      render :show
+      redirect_to dashboard_path
+
+    # Handle other failures
     rescue => e
-      # Something else happened, completely unrelated to Stripe
       flash[:error] = e.message
-      render :show
+      redirect_to dashboard_path
     end
   end
 
   def index
   end
 
+  # Using destroy action to handle refunds
   def destroy
     begin
       # Retrieve the charge from Stripe
@@ -148,31 +113,15 @@ class ChargesController < ApplicationController
       # Let the user know the refund was successful
       flash[:success] = "The charge has been refunded."
       redirect_to dashboard_path
-    rescue Stripe::RateLimitError => e
-      # Too many requests made to the API too quickly
-      flash[:error] = e.message
-      redirect_to dashboard_path
-    rescue Stripe::InvalidRequestError => e
-      # Invalid parameters were supplied to Stripe's API
-      flash[:error] = e.message
-      redirect_to dashboard_path
-    rescue Stripe::AuthenticationError => e
-      # Authentication with Stripe's API failed
-      # (maybe you changed API keys recently)
-      flash[:error] = e.message
-      redirect_to dashboard_path
-    rescue Stripe::APIConnectionError => e
-      # Network communication with Stripe failed
-      flash[:error] = e.message
-      redirect_to dashboard_path
+
+    # Handle Stripe exceptions
     rescue Stripe::StripeError => e
-      # Display a very generic error to the user, and maybe send
-      # yourself an email
-      flash[:error] = e.message
+      flash.now[:error] = e.message
       redirect_to dashboard_path
+    
+    # Handle other failures
     rescue => e
-      # Something else happened, completely unrelated to Stripe
-      flash[:error] = e.message
+      flash.now[:error] = e.message
       redirect_to dashboard_path
     end
   end
@@ -182,7 +131,9 @@ class ChargesController < ApplicationController
       params.permit(:amount, :stripeToken, :name, :campaign, :authenticity_token)
     end
 
+    # Charge is retrieved from the platform, so only the destination should have access to it
     def check_destination(charge)
+      # Redirect to the dashboard if the charge doesn't belong to current user
       unless charge.destination.eql?(current_user.stripe_account)
         flash[:error] = "You don't have access to this charge."
         redirect_to dashboard_path

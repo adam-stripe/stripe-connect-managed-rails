@@ -1,7 +1,7 @@
 <%= content_for :page_title, 'Fundraising Marketplace | Dashboard' %>
 <div class="container">
   <div class="row">
-    <div class="col-md-12 text-center topspace-lg">
+    <div class="col-md-12 text-center topspace">
       <%= render 'layouts/messages' %>
     </div>
   </div>
@@ -22,6 +22,17 @@
   </h2>
   <% unless @transactions.empty? %>
     <%= render 'transactions' %>
+    <div class="topspace text-center">
+      <h3>Want your funds immediately?</h3>
+      <p>
+        For an extra 2.5% fee, we'll create an instant transfer to your debit card.
+      </p>
+      <% if @debit_card %>
+        <%= button_to "Get this transfer instantly", instant_transfer_path, data: { confirm: "Instant transfer #{format_amount(@instant_amt)} to your #{@debit_card.brand} debit card ending in #{@debit_card.last4}?" }, method: :post, params: { amount: @instant_amt.round, destination: @debit_card.id }, class: "btn btn-success btn-lg btn-custom" %>
+      <% else %>
+        <%= link_to "Add a debit card", debit_cards_new_path, class: "btn btn-lg btn-success btn-custom" %>
+      <% end %>
+    </div>
   <% else %>
     No transactions yet. 
   <% end %>

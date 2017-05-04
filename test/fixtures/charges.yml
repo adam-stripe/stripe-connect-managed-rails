@@ -4,12 +4,10 @@ one:
   charge_id: MyString
   amount: 1
   amount_refunded: 1
-  user_id: 1
   campaign_id: 1
 
 two:
   charge_id: MyString
   amount: 1
   amount_refunded: 1
-  user_id: 1
   campaign_id: 1

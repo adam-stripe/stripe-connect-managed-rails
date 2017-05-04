@@ -137,8 +137,8 @@
           This campaign is no longer active.
         </div>
       <% end %>
-      <div>
-        <%= image_tag("#{@campaign.image}?q=50&fm=jpg&w=800&fit=max", class: "img-responsive img-thumbnail") %>
+      <div class="text-center">
+        <%= image_tag("#{@campaign.image}_lg.jpg", class: "img-responsive img-thumbnail") %>
       </div>
       <h2 class="page-header text-center"><%= @campaign.title.titleize %></h2>
       <h3 class="goal text-center">

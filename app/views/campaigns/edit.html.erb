@@ -24,19 +24,7 @@
                 <%= f.text_area :description, class: "form-control input-lg" %>
               </div>
               <div class="form-group">
-                <%= f.label :image, "Current image" %>
-                <div>
-                  <a class="campaign-image" href="javascript:void(0);" id="<%= @campaign.image %>"><%= image_tag("#{@campaign.image}?q=50&fm=jpg&w=600&fit=max", class: "img-responsive img-thumbnail img-selected") %></a>
-                </div>
-                <% @images.each_slice(3) do |images| %>
-                  <div class="row topspace">
-                    <% images.each do |img| %>
-                      <div class="col-md-4">  
-                        <a class="campaign-image" href="javascript:void(0);" id="<%= img.urls.raw %>"><%= image_tag("#{img.urls.thumb}", class: "img-thumbnail") %></a>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
+                <%= render 'images' %>
               </div>
               <div class="form-group">
                 <%= f.button "Update Campaign", class: "btn btn-primary btn-lg btn-block btn-custom", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Updating campaign..."} %>

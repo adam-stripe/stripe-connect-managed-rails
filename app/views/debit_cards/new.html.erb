@@ -1,0 +1,94 @@
+<%= content_for :page_title, "Add debit card" %>
+<% content_for(:header) do %>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  $(function(){
+    // Set your Stripe publishable API key here
+    var stripe = Stripe("<%= ENV['PUBLISHABLE_KEY'] %>");
+
+    var elements = stripe.elements();
+
+    // Style the payment element
+    var style = {
+      base: {
+        fontSize: "14px"
+      }
+    };
+
+    // Create an instance of the card Element
+    var card = elements.create('card', {style: style});
+
+    // Add an instance of the card Element into the `card-element` <div>
+    card.mount('#card-element');
+
+    // Listen for errors
+    card.addEventListener('change', function(event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+        displayError.style.display = 'block';
+      } else {
+        displayError.textContent = '';
+        displayError.style.display = 'none';
+      }
+    });
+
+    // Create a token
+    var form = document.getElementById('payment-form');
+    var options = {
+      currency: 'usd',
+    };
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      var submit_btn = document.getElementById('submit_payment');
+      var errorElement = document.getElementById('card-errors');
+      submit_btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Adding debit card...";
+      submit_btn.className += " disabled";
+      stripe.createToken(card, options).then(function(result) {
+        if (result.error) {
+          errorElement.textContent = result.error.message;
+          errorElement.style.display = 'block';
+          submit_btn.innerHTML = "Add a card";
+          submit_btn.classList.remove("disabled");
+        } else {
+          // Reset errors
+          errorElement.textContent = '';
+          errorElement.style.display = 'none';
+          // Send the token to your server
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+
+    // Submit the token
+    function stripeTokenHandler(token) {
+      // Insert the token ID into the form so it gets submitted to the server
+      var form = document.getElementById('payment-form');
+      var hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'stripeToken');
+      hiddenInput.setAttribute('value', token.id);
+      form.appendChild(hiddenInput);
+
+      // Submit the form
+      form.submit();
+    }
+  });
+</script>
+<% end %>
+<div class="container">
+  <div class="row topspace-lg">
+    <div class="col-md-6 col-md-offset-3">
+      <h1 class="text-center">Add a debit card</h1>
+      <h3 class="text-center">Get an <a href="https://stripe.com/docs/connect/payouts#instant-payouts">instant payout</a></h3>
+      <div>
+        <%= render 'layouts/messages' %>
+        <%= render 'debit_card_form' %>
+        <p class="text-center">
+          <a href="https://stripe.com/docs/testing#cards" target="_blank">Test debit card numbers</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

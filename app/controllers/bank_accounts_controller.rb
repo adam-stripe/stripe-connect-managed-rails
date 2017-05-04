@@ -1,8 +1,10 @@
 class BankAccountsController < ApplicationController
+  before_action :authenticate_user!
+  
   def new
-    # Redirect if no stripe account yet
+    # Redirect if no stripe account exists yet
     unless current_user.stripe_account
-      redirect_to new_stripe_account_path
+      redirect_to new_stripe_account_path and return
     end
 
     begin
@@ -10,65 +12,41 @@ class BankAccountsController < ApplicationController
       @account = Stripe::Account.retrieve(current_user.stripe_account)
       @full_name = "#{@account.legal_entity.first_name}" + " #{@account.legal_entity.last_name}"
     
-    rescue Stripe::RateLimitError => e
-      flash[:alert] = e.message
-      render 'new'
-    rescue Stripe::InvalidRequestError => e
-      flash[:alert] = e.message
-      render 'new'
-    rescue Stripe::AuthenticationError => e
-      flash[:alert] = e.message
-      render 'new'
-    rescue Stripe::APIConnectionError => e
-      flash[:alert] = e.message
-      render 'new'
+    # Handle exceptions from Stripe
     rescue Stripe::StripeError => e
-      flash[:alert] = e.message
-      render 'new'
+      handle_error(e.message, 'new')
+    
+    # Handle any other exceptions
     rescue => e
-      puts e
-      # Something else failed in the app. Maybe log or send an email?
-      flash[:alert] = "Sorry, we weren't able to retrieve this account."
-      render 'new'
+      handle_error(e.message, 'new')
     end 
   end
 
   def create
-    if params[:stripeToken]
-      if current_user.stripe_account
-        begin
-          # Retrieve the account object for this user
-          account = Stripe::Account.retrieve(current_user.stripe_account)
+    # Redirect if no token is POSTed or the user doesn't have a Stripe account
+    unless params[:stripeToken] && current_user.stripe_account
+      redirect_to new_bank_account_path and return
+    end
 
-          # Create the bank account
-          account.external_accounts.create(external_account: params[:stripeToken])
-          
-          flash[:success] = "Your bank account has been added!"
-          redirect_to dashboard_path
-        
-        # Handle exceptions
-        rescue Stripe::RateLimitError => e
-          flash[:alert] = e.message
-          render 'new'
-        rescue Stripe::InvalidRequestError => e
-          flash[:alert] = e.message
-          render 'new'
-        rescue Stripe::AuthenticationError => e
-          flash[:alert] = e.message
-          render 'new'
-        rescue Stripe::APIConnectionError => e
-          flash[:alert] = e.message
-          render 'new'
-        rescue Stripe::StripeError => e
-          flash[:alert] = e.message
-          render 'new'
-        rescue => e
-          # Something else failed in the app. Maybe log or send an email?
-          flash[:alert] = "Sorry, we weren't able to add this bank account."
-          render 'new'
-        end
-      end
+    begin
+      # Retrieve the account object for this user
+      account = Stripe::Account.retrieve(current_user.stripe_account)
+
+      # Create the bank account
+      account.external_account = params[:stripeToken]
+      account.save
+      
+      # Success, send on to the dashboard
+      flash[:success] = "Your bank account has been added!"
+      redirect_to dashboard_path
+    
+    # Handle exceptions from Stripe
+    rescue Stripe::StripeError => e
+      handle_error(e.message, 'new')
+
+    # Handle any other exceptions
+    rescue => e
+      handle_error(e.message, 'new')
     end
   end
-
 end

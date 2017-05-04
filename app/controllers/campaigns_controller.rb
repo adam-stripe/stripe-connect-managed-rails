@@ -1,47 +1,57 @@
 class CampaignsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :dashboard]
+  before_action :authenticate_user!, except: [:home, :show]
 
   def home
+    # Retrieve all active campaigns
     @campaigns = Campaign.where(active: true).order(created_at: :desc)
   end
 
   def new
-    # Check for an existing Stripe account
+    # Redirect if no existing Stripe account
     unless current_user.stripe_account
-      redirect_to new_stripe_account_path
+      redirect_to new_stripe_account_path and return
     end
 
-    # Retrieve images
-    random_image
-
+    # Create a new campaign object
     @campaign = Campaign.new
   end
 
   def create
+    # Create a campaign for the user
     @campaign = current_user.campaigns.create(campaign_params)
+
+    # Redirect to the campaign page once created
     if @campaign.save
       flash[:notice] = "Your campaign has been created!"
       redirect_to @campaign
-    else 
-      flash.now[:danger] = @campaign.errors.full_messages
-      random_image
-      render :new
+    else
+      handle_error(@campaign.errors.full_messages, 'new')
     end
   end
 
   def show
+    # Retrieve a campaign
     @campaign = Campaign.find(params[:id])
 
+    # List all charges for a given campaign
     @charges = Charge.where(campaign_id: @campaign.id, amount_refunded: nil).order(created_at: :desc)
   end
 
   def dashboard
+    # List campaigns for the current user
     @campaigns = current_user.campaigns.order(created_at: :desc)
 
+    # Redirect if there's not a Stripe account for this user yet
+    unless current_user.stripe_account
+      flash[:success] = "Create an account to get started."
+      redirect_to new_stripe_account_path and return
+    end
+
     # Retrieve charges, transfers, balance transactions, & balance from Stripe
-    if current_user.stripe_account
+    begin
       @stripe_account = Stripe::Account.retrieve(current_user.stripe_account)
 
+      # Last 100 charges
       @payments = Stripe::Charge.list(
         {
           limit: 100,
@@ -50,6 +60,7 @@ class CampaignsController < ApplicationController
         { stripe_account: current_user.stripe_account }
       )
 
+      # Last 100 payouts from the managed account to their bank account
       @transfers = Stripe::Transfer.list(
         {
           limit: 100
@@ -57,18 +68,20 @@ class CampaignsController < ApplicationController
         { stripe_account: current_user.stripe_account }
       )
 
+      # Retrieve available and pending balance for an account
       @balance = Stripe::Balance.retrieve(stripe_account: current_user.stripe_account)
 
       # Retrieve transactions with an available_on date in the future
+      # For a large platform, it's generally preferrable to handle these async
       transactions = Stripe::BalanceTransaction.all(
         {
           limit: 100, 
           available_on: {gte: Time.now.to_i}
         },{ stripe_account: current_user.stripe_account })
 
-      balances = Hash.new
-
       # Iterate through transactions and sum values for each available_on date
+      # For a production app, you'll probably want to store and query these locally instead
+      balances = Hash.new
       transactions.auto_paging_each do |txn|
         if balances.key?(txn.available_on)
           balances[txn.available_on] += txn.net
@@ -79,33 +92,46 @@ class CampaignsController < ApplicationController
 
       # Sort the results
       @transactions = balances.sort_by {|date,net| date}
-    else
-      flash[:success] = "Create a fundraising campaign to get started."
-      redirect_to new_campaign_path
-    end
+
+      # Check for a debit card external account and determine amount for transfer
+      @debit_card = @stripe_account.external_accounts.find { |c| c.object == "card"}
+      @instant_amt = @balance.pending[0].amount*0.975
+      
+    # Handle Stripe exceptions
+    rescue Stripe::StripeError => e
+      flash[:error] = e.message
+      redirect_to root_path
     
+    # Handle other exceptions
+    rescue => e
+      flash[:error] = e.message
+      redirect_to root_path
+    end 
   end
 
   def edit
-    random_image
+    # Retrieve the campaign
     @campaign = Campaign.find(params[:id])
   end
 
   def update
+    # Retrieve the campaign
     @campaign = Campaign.find(params[:id])
+
+    # Redirect to view campaign
     if @campaign.update_attributes(campaign_params)
       flash[:notice] = "Your campaign has been updated!"
       redirect_to @campaign
     else 
-      flash.now[:danger] = @campaign.errors.full_messages
-      random_image
-      render :edit
+      handle_error(@campaign.errors.full_messages, 'edit')
     end
   end
 
   def destroy
+    # Retrieve the campaign
     campaign = Campaign.find(params[:id])
 
+    # Respond with deletion status
     if campaign.update_attributes(active: false)
       flash[:notice] = "Your campaign has been deleted."
       redirect_to dashboard_path
@@ -118,10 +144,5 @@ class CampaignsController < ApplicationController
   private
     def campaign_params
       params.require(:campaign).permit(:title, :description, :goal, :subscription, :image)
-    end
-
-    # Generate a random user image for the authenticated user
-    def random_image
-      @images = Unsplash::Photo.all(page = rand(1...99), per_page = 9)
     end
 end
