@@ -10,23 +10,23 @@
             <%= form_for @campaign do | campaign | %>
               <div class="form-group">
                 <%= campaign.label :title, "Title" %>
-                <%= campaign.text_field :title, class: "form-control input-lg", placeholder: "Help me pay my college tuition!", autofocus: true %>
+                <%= campaign.text_field :title, class: "form-control input-lg", placeholder: "Help me pay my college tuition!", value: "#{@campaign_title}" %>
               </div>
               <div class="form-group">
                 <%= campaign.label :goal, "Goal" %>
                 <div class="input-group">
                   <span class="input-group-addon">$</span>
-                  <%= campaign.text_field :goal, class: "form-control input-lg", placeholder: "200.00"%>
+                  <%= campaign.text_field :goal, class: "form-control input-lg", placeholder: "200.00", value: "#{@goal}" %>
                 </div>
               </div>
               <div class="form-group">
                 <%= campaign.label :description, "Description" %>
-                <%= campaign.text_area :description, class: "form-control input-lg", placeholder: "My tuition is expensive! Please donate if you want to help me pay it."%>
+                <%= campaign.text_area :description, class: "form-control input-lg", placeholder: "My tuition is expensive! Please donate if you want to help me pay it.", value: "#{@campaign_description}", rows: 4 %>
               </div>
               <div class="form-group">
                 <%= campaign.label :image, "Select an image for your campaign" %>
                 <%= render 'images' %>
-                <%= campaign.hidden_field :image %>
+                <%= campaign.hidden_field :image, value: "#{@campaign_image}" %>
               </div>
               <div class="form-group">
                 <%= campaign.button "Create Campaign", class: "btn btn-primary btn-lg btn-block btn-custom", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Creating campaign..."} %>

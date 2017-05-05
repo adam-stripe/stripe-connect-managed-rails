@@ -1,5 +1,6 @@
 class CampaignsController < ApplicationController
   before_action :authenticate_user!, except: [:home, :show]
+  include CampaignsHelper
 
   def home
     # Retrieve all active campaigns
@@ -11,6 +12,9 @@ class CampaignsController < ApplicationController
     unless current_user.stripe_account
       redirect_to new_stripe_account_path and return
     end
+
+    # Populate random campaign info
+    random_campaign
 
     # Create a new campaign object
     @campaign = Campaign.new
@@ -147,5 +151,13 @@ class CampaignsController < ApplicationController
   private
     def campaign_params
       params.require(:campaign).permit(:title, :description, :goal, :subscription, :image)
+    end
+
+    def random_campaign
+      data = campaign_data.sample
+      @campaign_title = data[:title]
+      @campaign_description = data[:description]
+      @campaign_image = data[:image]
+      @goal = amounts.sample
     end
 end
