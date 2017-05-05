@@ -10,18 +10,18 @@
         </tr>
       </thead>
       <tbody>
-        <% @transfers.each do |transfer| %>
+        <% @payouts.each do |payout| %>
           <tr>
-            <td><%= transfer.id %></td>
+            <td><%= payout.id %></td>
             <td>
-              <% if transfer.type.eql?('bank_account') %>
-                <%= transfer.bank_account.bank_name %> ending in <%= transfer.bank_account.last4 %>
-              <% elsif transfer.type.eql?('card') %>
-                <%= transfer.card.brand %> ending in <%= transfer.card.last4 %>
+              <% if payout.type.eql?('bank_account') %>
+                <%= payout.bank_account.bank_name %> ending in <%= payout.bank_account.last4 %>
+              <% elsif payout.type.eql?('card') %>
+                <%= payout.destination.brand %> ending in <%= payout.destination.last4 %>
               <% end %>
             </td>
-            <td><%= format_amount(transfer.amount) %></td>
-            <td><%= format_date(transfer.date) %></td>
+            <td><%= format_amount(payout.amount) %></td>
+            <td><%= format_date(payout.arrival_date) %></td>
           </tr>
         <% end %>
       </tbody>

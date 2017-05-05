@@ -18,36 +18,48 @@
 
   <h2 class="page-header">
     <i class="fa fa-table purple"></i>  Transaction balance 
-    <br><small><span class="raised"><%= format_amount(@balance.pending[0].amount) %></span> pending</small>
+    <br><small><span class="raised"><%= format_amount(@balance_available) %></span> pending</small>
   </h2>
-  <% unless @transactions.empty? %>
-    <%= render 'transactions' %>
-    <div class="topspace text-center">
-      <h3>Want your funds immediately?</h3>
-      <p>
-        For an extra 2.5% fee, we'll create an instant transfer to your debit card.
-      </p>
-      <% if @debit_card %>
-        <%= button_to "Get this transfer instantly", instant_transfer_path, data: { confirm: "Instant transfer #{format_amount(@instant_amt)} to your #{@debit_card.brand} debit card ending in #{@debit_card.last4}?" }, method: :post, params: { amount: @instant_amt.round, destination: @debit_card.id }, class: "btn btn-success btn-lg btn-custom" %>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <% unless @transactions.empty? || @balance_available == 0 %>
+        <%= render 'transactions' %>
+        <div class="topspace text-center">
+          <h3>Want your funds immediately?</h3>
+          <p>
+            For an extra 3% fee, we'll create an instant transfer to your debit card.
+          </p>
+          <% if @debit_card %>
+            <%= button_to "Get this transfer instantly", instant_transfer_path, data: { confirm: "Instant payout #{format_amount(@instant_amt)} to your #{@debit_card.brand} debit card ending in #{@debit_card.last4}?" }, method: :post, params: { amount: @instant_amt.round, fee: @instant_fee.round, destination: @debit_card.id }, class: "btn btn-success btn-lg btn-custom" %>
+          <% else %>
+            <%= link_to "Add a debit card", debit_cards_new_path, class: "btn btn-lg btn-success btn-custom" %>
+          <% end %>
+        </div>
       <% else %>
-        <%= link_to "Add a debit card", debit_cards_new_path, class: "btn btn-lg btn-success btn-custom" %>
+        No transactions pending.
       <% end %>
     </div>
-  <% else %>
-    No transactions yet. 
-  <% end %>
+  </div>
 
   <h2 class="page-header"><i class="fa fa-dollar purple"></i> Donations received</h2>
-  <% unless @payments.data.empty? %>
-    <%= render 'charges' %>
-  <% else %>
-    No donations yet.
-  <% end %>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <% unless @payments.data.empty? %>
+        <%= render 'charges' %>
+      <% else %>
+        No donations yet.
+      <% end %>
+    </div>
+  </div>
 
   <h2 class="page-header"><i class="fa fa-bank purple"></i> Transfers</h2>
-  <% unless @transfers.data.empty? %>
-    <%= render 'transfers' %>
-  <% else %>
-    No transfers yet.
-  <% end %>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <% unless @payouts.data.empty? %>
+        <%= render 'transfers' %>
+      <% else %>
+        No transfers yet.
+      <% end %>
+    </div>
+  </div>
 </div>

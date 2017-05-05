@@ -61,15 +61,17 @@ class CampaignsController < ApplicationController
       )
 
       # Last 100 payouts from the managed account to their bank account
-      @transfers = Stripe::Transfer.list(
+      @payouts = Stripe::Payout.list(
         {
-          limit: 100
+          limit: 100,
+          expand: ['data.destination']
         },
         { stripe_account: current_user.stripe_account }
       )
 
       # Retrieve available and pending balance for an account
       @balance = Stripe::Balance.retrieve(stripe_account: current_user.stripe_account)
+      @balance_available = @balance.available.first.amount + @balance.pending.first.amount
 
       # Retrieve transactions with an available_on date in the future
       # For a large platform, it's generally preferrable to handle these async
@@ -93,9 +95,10 @@ class CampaignsController < ApplicationController
       # Sort the results
       @transactions = balances.sort_by {|date,net| date}
 
-      # Check for a debit card external account and determine amount for transfer
+      # Check for a debit card external account and determine amount for payout
       @debit_card = @stripe_account.external_accounts.find { |c| c.object == "card"}
-      @instant_amt = @balance.pending[0].amount*0.975
+      @instant_amt = @balance_available*0.97
+      @instant_fee = @balance_available*0.03
       
     # Handle Stripe exceptions
     rescue Stripe::StripeError => e

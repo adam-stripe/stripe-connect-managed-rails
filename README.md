@@ -5,7 +5,7 @@ An example application built using [Stripe Connect](https://stripe.com/docs/conn
 **Note: this application is provided as an example, but isn't meant to be run in production.**
 
 ## Demo
-You can find a working demo of this application deployed and running in test mode at https://stripe-marketplace-demo.herokuapp.com/. Feel free to create an account, create a campaign, and make donations to see some data populated in the dashboard. You can find [test card numbers](https://stripe.com/docs/testing#cards), [bank accounts](https://stripe.com/docs/testing#managed-accounts), and [identity verification](https://stripe.com/docs/connect/testing) details in Stripe's documentation.
+**You can find a working demo of this application deployed and running in test mode at https://stripe-marketplace-demo.herokuapp.com/**. Feel free to create an account, create a campaign, and make donations to see some data populated in the dashboard. You can find [test card numbers](https://stripe.com/docs/testing#cards), [bank accounts](https://stripe.com/docs/testing#managed-accounts), and [identity verification](https://stripe.com/docs/connect/testing) details in Stripe's documentation.
 
 ## Features
 * Create fundraising campaigns and managed Stripe Connect accounts. 
