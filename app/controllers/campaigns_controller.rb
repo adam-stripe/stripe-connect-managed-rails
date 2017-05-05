@@ -4,7 +4,7 @@ class CampaignsController < ApplicationController
 
   def home
     # Retrieve all active campaigns
-    @campaigns = Campaign.where(active: true).order(created_at: :desc)
+    @campaigns = Campaign.where(active: true).order(created_at: :desc).page params[:page]
   end
 
   def new

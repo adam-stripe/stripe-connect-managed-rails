@@ -39,8 +39,8 @@ gem 'devise', '~> 4.2', '>= 4.2.1'
 gem 'data-confirm-modal'
 # Mailgun to gun the mails
 gem 'mailgun-ruby'
-# Unsplash to unsplash random images
-gem 'unsplash'
+# Paginate all the things
+gem 'kaminari'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

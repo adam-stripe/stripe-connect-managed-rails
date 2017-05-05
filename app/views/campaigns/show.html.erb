@@ -1,6 +1,53 @@
 <%= content_for :page_title, "#{@campaign.title.titleize} | Fundraising Marketplace" %>
 <% content_for(:header) do %>
-  <% if params[:elements].present? %>
+  <% if params[:checkout].present? %>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script>
+      $(function() {
+        var handler = StripeCheckout.configure({
+          key: '<%= ENV['PUBLISHABLE_KEY'] %>',
+          image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+          locale: 'auto',
+          token: function(token) {
+            $("#stripeToken").val(token.id);
+            $("#checkout_form").submit();
+          }
+        });
+
+        document.getElementById('checkoutBtn').addEventListener('click', function(e) {
+          // Clear any errors
+          $('#amount').parent('.form-group').removeClass('has-error');
+
+          // Check for a valid amount
+          if ($('#amount').val() == ''){
+            $('#amount').parent('.form-group').addClass('has-error');
+            e.preventDefault();
+            return false;
+          }
+          else {
+            // Set the donation amount
+            var amount = $("#amount").val().replace('$','') * 100;
+            var displayAmount = parseFloat(Math.floor($("#amount").val() * 100) / 100).toFixed(2);
+          }
+
+          // Open Checkout with further options:
+          handler.open({
+            name: 'Fundraising Marketplace',
+            description: 'Donation',
+            zipCode: true,
+            alipay: true,
+            amount: amount
+          });
+          e.preventDefault();
+        });
+
+        // Close Checkout on page navigation:
+        window.addEventListener('popstate', function() {
+          handler.close();
+        });
+      });
+    </script>
+  <% else %>
     <script src="https://js.stripe.com/v3/"></script>
     <script>
       $(function(){
@@ -79,53 +126,6 @@
         }
       });
     </script>
-  <% else %>
-    <script src="https://checkout.stripe.com/checkout.js"></script>
-    <script>
-      $(function() {
-        var handler = StripeCheckout.configure({
-          key: '<%= ENV['PUBLISHABLE_KEY'] %>',
-          image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-          locale: 'auto',
-          token: function(token) {
-            $("#stripeToken").val(token.id);
-            $("#checkout_form").submit();
-          }
-        });
-
-        document.getElementById('checkoutBtn').addEventListener('click', function(e) {
-          // Clear any errors
-          $('#amount').parent('.form-group').removeClass('has-error');
-
-          // Check for a valid amount
-          if ($('#amount').val() == ''){
-            $('#amount').parent('.form-group').addClass('has-error');
-            e.preventDefault();
-            return false;
-          }
-          else {
-            // Set the donation amount
-            var amount = $("#amount").val().replace('$','') * 100;
-            var displayAmount = parseFloat(Math.floor($("#amount").val() * 100) / 100).toFixed(2);
-          }
-
-          // Open Checkout with further options:
-          handler.open({
-            name: 'Fundraising Marketplace',
-            description: 'Donation',
-            zipCode: true,
-            alipay: true,
-            amount: amount
-          });
-          e.preventDefault();
-        });
-
-        // Close Checkout on page navigation:
-        window.addEventListener('popstate', function() {
-          handler.close();
-        });
-      });
-    </script>
   <% end %>
 <% end %>
 <div class="container">
@@ -161,10 +161,10 @@
       <% end %>
     </div>
     <div class="col-md-4">
-      <% if params[:elements].present? %>
-        <%= render 'paymentform' %>
-      <% else %>
+      <% if params[:checkout].present? %>
         <%= render 'checkoutform' %>
+      <% else %>
+        <%= render 'paymentform' %>
       <% end %>
       <p class="text-center">
         <a href="https://stripe.com/docs/testing#cards" target="_blank">Test card numbers</a>

@@ -1,27 +1,47 @@
 <%= content_for :page_title, 'Stripe Connect Example App' %>
-<div class="home-hero">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3 text-center topspace-lg">
-        <%= render 'layouts/messages' %>
-        <h1 class="topspace-lg">Fundraising Marketplace</h1>
-        <h3>A <a href="https://stripe.com/connect">Stripe Connect</a> example app</h3>
-        <p class="topspace-lg">
-          <% if user_signed_in? %>
-            <%= link_to "Create", new_campaign_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
-          <% else %>
-            <%= link_to "Create", new_user_registration_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
-          <% end %>
-        </p>
+<% if params[:page] %>
+
+<% else %>
+  <div class="home-hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center topspace-lg">
+          <%= render 'layouts/messages' %>
+          <h1 class="topspace-lg">Fundraising Marketplace</h1>
+          <h3>A <a href="https://stripe.com/connect">Stripe Connect</a> example app</h3>
+          <p class="topspace-lg">
+            <% if user_signed_in? %>
+              <%= link_to "Create", new_campaign_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
+            <% else %>
+              <%= link_to "Create", new_user_registration_path, class: "btn btn-xl btn-primary btn-custom btn-block shadow-sm" %>
+            <% end %>
+          </p>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 <div class="container">
   <div class="row topspace-lg">
     <div class="col-md-12">
       <h2 class="page-header"><i class="fa fa-line-chart purple"></i> Popular campaigns</h2>
       <%= render 'campaigns' %>
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <%= paginate @campaigns %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+<% if params[:page] %>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <% if user_signed_in? %>
+        <%= link_to "Create a campaign", new_campaign_path, class: "btn btn-lg btn-primary btn-custom btn-block shadow-sm" %>
+      <% else %>
+        <%= link_to "Create a campaign", new_user_registration_path, class: "btn btn-lg btn-primary btn-custom btn-block shadow-sm" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
