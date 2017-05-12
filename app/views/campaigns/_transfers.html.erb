@@ -15,7 +15,7 @@
             <td><%= payout.id %></td>
             <td>
               <% if payout.type.eql?('bank_account') %>
-                <%= payout.bank_account.bank_name %> ending in <%= payout.bank_account.last4 %>
+                <%= payout.destination.bank_name %> ending in <%= payout.destination.last4 %>
               <% elsif payout.type.eql?('card') %>
                 <%= payout.destination.brand %> ending in <%= payout.destination.last4 %>
               <% end %>
