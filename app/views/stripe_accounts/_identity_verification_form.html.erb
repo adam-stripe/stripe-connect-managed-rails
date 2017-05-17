@@ -20,7 +20,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <%= f.label :address_state, "State" %>
-              <%= f.select(:address_state, options_for_select(states, @stripe_account[:address_state]), {}, { class: "form-control input-lg" }) %>
+              <%= f.select(:address_state, options_for_select(states, @account[:address_state]), {}, { class: "form-control input-lg" }) %>
             </div>
           </div>
           <div class="col-md-4">
@@ -38,7 +38,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <%= f.label :account_type, "Account Type" %>
-              <%= f.select(:account_type, options_for_select([["Individual","individual"], ["Company","company"]], @stripe_account[:account_type]), {}, { class: "form-control input-lg" }) %>
+              <%= f.select(:account_type, options_for_select([["Individual","individual"], ["Company","company"]], @account[:account_type]), {}, { class: "form-control input-lg" }) %>
             </div>
           </div>
         </div>
@@ -64,19 +64,19 @@
           <div class="col-md-4">
             <div class="form-group">
               <%= f.label :dob_month, "DOB Month" %>
-              <%= f.select(:dob_month, options_for_select([["January", "1"],["February", "2"],["March", "3"],["April", "4"],["May", "5"],["June", "6"],["July", "7"],["August", "8"],["September", "9"],["October", "10"],["November", "11"],["December", "12"]], @stripe_account[:dob_month]), {}, { class: "form-control input-lg" }) %>
+              <%= f.select(:dob_month, options_for_select([["January", "1"],["February", "2"],["March", "3"],["April", "4"],["May", "5"],["June", "6"],["July", "7"],["August", "8"],["September", "9"],["October", "10"],["November", "11"],["December", "12"]], @account[:dob_month]), {}, { class: "form-control input-lg" }) %>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <%= f.label :dob_day, "DOB Day" %>
-              <%= f.select(:dob_day, options_for_select((1..31).each{|n| [n, n]}, @stripe_account[:dob_day]), {}, { class: "form-control input-lg" }) %>
+              <%= f.select(:dob_day, options_for_select((1..31).each{|n| [n, n]}, @account[:dob_day]), {}, { class: "form-control input-lg" }) %>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <%= f.label :dob_year, "DOB Year" %>
-              <%= f.select(:dob_year, options_for_select((1912..2016).each{|n| [n, n]}, @stripe_account[:dob_year]), {}, { class: "form-control input-lg" }) %>
+              <%= f.select(:dob_year, options_for_select((1912..2016).each{|n| [n, n]}, @account[:dob_year]), {}, { class: "form-control input-lg" }) %>
             </div>
           </div>
         </div>
@@ -117,7 +117,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Full social security number (used to verify your identity)</label>
-              <input type="text" id="personal_id_number" name="stripe_account[personal_id_number]" class="form-control input-lg" placeholder="123-45-6789" required>
+              <input type="text" id="personal_id_number" class="form-control input-lg" placeholder="123-45-6789" required>
               <span class="help-block">Never stored, only used to verify your identity.</span>
             </div>
           </div>
@@ -163,6 +163,28 @@
         return false;
       });
     }
+    function stripeResponseHandler(status, response) {
+      // Grab the form:
+      var $form = $('form');
+
+      if (response.error) { // Problem!
+        // Let the user know there was a problem
+        $form.append("<div class='alert alert-danger'>"+response.error.message+"</div>");
+        $form.find('.submit').prop('disabled', false); // Re-enable submission
+
+      } else { // Token created!
+        $form.find('.submit').html("<i class='fa fa-check'></i> Information submitted");
+
+        // Get the token ID:
+        var token = response.id;
+
+        // Insert the token into the form so it gets submitted to the server:
+        $form.append($('<input type="hidden" name="stripe_account[personal_id_number]" />').val(token));
+
+        // Submit the form:
+        $form.get(0).submit();
+      }
+    }
     // If an identity document is requested, upload it
     if ($('#file_upload').length){
       $form.submit(function(event) {
@@ -202,27 +224,4 @@
       });
     }
   });
-
-  function stripeResponseHandler(status, response) {
-    // Grab the form:
-    var $form = $('form');
-
-    if (response.error) { // Problem!
-      // Let the user know there was a problem
-      $form.append("<div class='alert alert-danger'>"+response.error.message+"</div>");
-      $form.find('.submit').prop('disabled', false); // Re-enable submission
-
-    } else { // Token created!
-      $form.find('.submit').html("<i class='fa fa-check'></i> Information submitted");
-
-      // Get the token ID:
-      var token = response.id;
-
-      // Insert the token into the form so it gets submitted to the server:
-      $form.append($('<input type="hidden" name="stripe_account[legal_entity.personal_id_number]" />').val(token));
-
-      // Submit the form:
-      $form.get(0).submit();
-    }
-  }
 </script>

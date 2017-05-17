@@ -54,9 +54,14 @@
       <div>
         <%= render 'layouts/messages' %>
         <%= render 'bank_account_form' %>
-        <p class="text-center">
-          <a href="https://stripe.com/docs/testing#managed-accounts" target="_blank">Test bank account numbers</a>
-        </p>
+        <div class="hint">
+          <p>
+            <i class="fa fa-info-circle"></i> Hint: use <strong>110000000</strong> and <strong>000123456789</strong> to simulate a successful transfer.
+          </p>
+          <p class="text-center">
+            <a href="https://stripe.com/docs/testing#managed-accounts" target="_blank">Other test bank account numbers</a>
+          </p>
+        </div>
       </div>
     </div>
   </div>

@@ -10,7 +10,6 @@ class BankAccountsController < ApplicationController
     begin
       # Retrieve the account object for this user
       @account = Stripe::Account.retrieve(current_user.stripe_account)
-      @full_name = "#{@account.legal_entity.first_name}" + " #{@account.legal_entity.last_name}"
     
     # Handle exceptions from Stripe
     rescue Stripe::StripeError => e

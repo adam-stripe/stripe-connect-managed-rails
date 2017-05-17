@@ -35,7 +35,6 @@
             name: 'Fundraising Marketplace',
             description: 'Donation',
             zipCode: true,
-            alipay: true,
             amount: amount
           });
           e.preventDefault();
@@ -51,7 +50,6 @@
     <script src="https://js.stripe.com/v3/"></script>
     <script>
       $(function(){
-        // Set your Stripe publishable API key here
         var stripe = Stripe("<%= ENV['PUBLISHABLE_KEY'] %>");
 
         var elements = stripe.elements();
@@ -86,16 +84,26 @@
         form.addEventListener('submit', function(event) {
           event.preventDefault();
 
+          // Clear any error styles
+          document.getElementById('amount').parentElement.classList.remove("has-error");
+          document.getElementById('name').parentElement.classList.remove("has-error");
+
           // Validate the form isn't empty before requesting a token
-          if (document.getElementById('amount').value == '' || document.getElementById('name').value == ''){
+          if (document.getElementById('amount').value == ''){
+            document.getElementById('amount').parentElement.classList.add("has-error");
             return false;
+          }
+          else if (document.getElementById('name').value == ''){
+            document.getElementById('name').parentElement.classList.add("has-error");
+            return false; 
           }
 
           var submit_btn = document.getElementById('submit_payment');
           var errorElement = document.getElementById('card-errors');
           submit_btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Making donation...";
           submit_btn.className += " disabled";
-          stripe.createToken(card).then(function(result) {
+          var cardDetails = {name: form.querySelector('input[name=name]').value};
+          stripe.createToken(card, cardDetails).then(function(result) {
             if (result.error) {
               errorElement.textContent = result.error.message;
               errorElement.style.display = 'block';
@@ -166,9 +174,14 @@
       <% else %>
         <%= render 'paymentform' %>
       <% end %>
-      <p class="text-center">
-        <a href="https://stripe.com/docs/testing#cards" target="_blank">Test card numbers</a>
-      </p>
+      <div class="text-center hint shadow-sm">
+        <p>
+          <i class="fa fa-info-circle"></i> Hint: use <strong>4242424242424242</strong> and any valid expiry for a successful charge.
+        </p>
+        <p>
+          <a href="https://stripe.com/docs/testing#cards" target="_blank">See all test card numbers</a>
+        </p>
+      </div>
       <% if current_user && @campaign.user_id.eql?(current_user.id) && @campaign.active %>
         <h3 class="page-header text-center"><i class="fa fa-edit purple"></i> Your campaign</h3>
         <p>

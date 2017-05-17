@@ -32,6 +32,7 @@ To run this locally, clone the repository and run bundler to install dependencie
 
 ```
 git clone https://github.com/adam-stripe/stripe-connect-managed-rails.git
+cd stripe-connect-managed-rails
 bundle install
 ```
 
@@ -41,7 +42,7 @@ Migrate:
 $ rails db:migrate
 ```
 
-Retrieve your [Stripe API keys](https://dashboard.stripe.com/account/apikeys) and set them as environment variables. You'll also need to retrieve and load credentials from [Unsplash](https://unsplash.com/oauth/applications) if you'll use their API for built in iYour can run this locally by starting Rails server:
+Retrieve your [Stripe API keys](https://dashboard.stripe.com/account/apikeys) and set them as environment variables. You can run this app locally by starting Rails server:
 
 ```
 PUBLISHABLE_KEY=YOUR_STRIPE_PUBLISHABLE_KEY SECRET_KEY=YOUR_STRIPE_SECRET_KEY rails s

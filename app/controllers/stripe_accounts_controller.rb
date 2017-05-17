@@ -2,19 +2,19 @@ class StripeAccountsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @stripe_account = StripeAccount.new
+    @account = StripeAccount.new
   end
 
   def create
-    @stripe_account = StripeAccount.new(account_params)
+    @account = StripeAccount.new(account_params)
 
-    if @stripe_account.valid?
+    if @account.save
       begin
         # For readability, both account creation options are shown separately
 
         # First option: create an account with full account application info
         if params[:full_account]
-          account = Stripe::Account.create(
+          stripe_account = Stripe::Account.create(
             managed: true,
             legal_entity: {
               first_name: account_params[:first_name].capitalize,
@@ -41,7 +41,7 @@ class StripeAccountsController < ApplicationController
         
         # Second option: create an account with incremental info
         else 
-          account = Stripe::Account.create(
+          stripe_account = Stripe::Account.create(
             managed: true,
             legal_entity: {
               first_name: account_params[:first_name].capitalize,
@@ -62,15 +62,15 @@ class StripeAccountsController < ApplicationController
 
       # If this is a business, update with these values
       if account_params[:account_type].eql?('company')
-        account.legal_entity.business_name = account_params[:business_name]
-        account.legal_entity.business_tax_id = account_params[:business_tax_id]
-        account.save
+        stripe_account.legal_entity.business_name = account_params[:business_name]
+        stripe_account.legal_entity.business_tax_id = account_params[:business_tax_id]
+        stripe_account.save
       end
 
       # Save the account ID for this user for later
-      @stripe_account.acct_id = account.id
-      @stripe_account.save
-      current_user.stripe_account = account.id
+      @account.acct_id = stripe_account.id
+      @account.save
+      current_user.stripe_account = stripe_account.id
 
       if current_user.save
         flash[:success] = "Your account has been created! 
@@ -90,7 +90,7 @@ class StripeAccountsController < ApplicationController
       end
     else
       @full_account = true if params[:full_account]
-      handle_error(@stripe_account.errors.full_messages)
+      handle_error(@account.errors.full_messages)
     end
   end
 
@@ -101,7 +101,10 @@ class StripeAccountsController < ApplicationController
       redirect_to dashboard_path and return
     end
 
+    # Retrieve the Stripe account to find fields needed
     @stripe_account = Stripe::Account.retrieve(params[:id])
+
+    # Retrieve the local account details
     @account = StripeAccount.find_by(acct_id: params[:id])
 
     if @stripe_account.verification.fields_needed.empty?
@@ -125,7 +128,8 @@ class StripeAccountsController < ApplicationController
     begin
       # Retrieve the Stripe account
       @stripe_account = Stripe::Account.retrieve(current_user.stripe_account)
-      @account = StripeAccount.find_by(acct_id: current_user.stripe_account)
+      
+      @account = StripeAccount.new(account_params)
 
       
       # Reject empty values

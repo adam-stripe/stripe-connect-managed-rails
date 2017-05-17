@@ -22,7 +22,7 @@ class CampaignsController < ApplicationController
 
   def create
     # Create a campaign for the user
-    @campaign = current_user.campaigns.create(campaign_params)
+    @campaign = current_user.campaigns.new(campaign_params)
 
     # Redirect to the campaign page once created
     if @campaign.save
@@ -59,7 +59,8 @@ class CampaignsController < ApplicationController
       @payments = Stripe::Charge.list(
         {
           limit: 100,
-          expand: ['data.source_transfer', 'data.application_fee']
+          expand: ['data.source_transfer', 'data.application_fee'],
+          source: {object: 'all'}
         },
         { stripe_account: current_user.stripe_account }
       )
@@ -83,7 +84,9 @@ class CampaignsController < ApplicationController
         {
           limit: 100, 
           available_on: {gte: Time.now.to_i}
-        },{ stripe_account: current_user.stripe_account })
+        },
+        { stripe_account: current_user.stripe_account }
+      )
 
       # Iterate through transactions and sum values for each available_on date
       # For a production app, you'll probably want to store and query these locally instead

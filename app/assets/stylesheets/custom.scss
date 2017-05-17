@@ -26,12 +26,11 @@ h1, h2, h3, h4 {
   color: #fff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   a {
-    margin-left: 20px;
-    color: #fff;
+    color: #2494be;
   }
   a:hover {
     text-decoration: none;
-    color: #2494be;
+    color: #fff;
   }
 }
 .lato {
@@ -208,12 +207,23 @@ h1, h2, h3, h4 {
   border-color: #939393;
   box-shadow: none;
 }
+.StripeElement--invalid {
+  border-color: #a94442;
+  box-shadow: none;
+}
 .form-control, .has-error .form-control:focus {
   border-width: 2px;
   box-shadow: none;
 }
 #card-errors {
   display: none;
+}
+.hint {
+  background-color: #DDE0E2;
+  border-color: #666;
+  padding: 5px;
+  color: #666;
+  text-align: center;
 }
 /* media queries */
 @media only screen 
