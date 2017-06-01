@@ -12,7 +12,13 @@
       <tbody>
         <% @payouts.each do |payout| %>
           <tr>
-            <td><%= payout.id %></td>
+            <td>
+              <% if payout.type.eql?('bank_account') %>
+                <%= link_to payout.id, payout_path(payout.id) %>
+              <% else %>
+                <%= payout.id %>
+              <% end %>
+            </td>
             <td>
               <% if payout.type.eql?('bank_account') %>
                 <%= payout.destination.bank_name %> ending in <%= payout.destination.last4 %>

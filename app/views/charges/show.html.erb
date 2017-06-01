@@ -35,7 +35,9 @@
             <dd><%= @charge.refunded %></dd>
             <hr>
           </dl>
-          <% unless @charge.refunded %>
+          <% if @charge.refunded %>
+            <button class="btn btn-lg btn-block btn-custom btn-danger disabled">This charge has been refunded</button>
+          <% else %>
             <%= link_to "Refund this donation", charge_path(@charge.id), method: :delete, data: { confirm: "Are you sure you want to refund this charge?", disable_with: "<i class='fa fa-spinner fa-spin'></i> Refunding charge..." }, class: "btn btn-lg btn-block btn-custom btn-danger" %>
           <% end %>
         </div>

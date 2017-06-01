@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post 'debit_cards/create', to: 'debit_cards#create'
   post 'debit_cards/destroy', to: 'debit_cards#destroy'
   post 'instant_transfer', to: 'debit_cards#transfer'
+  get 'payouts/:id', to: 'payouts#show', as: 'payout'
 
   resources :campaigns
 

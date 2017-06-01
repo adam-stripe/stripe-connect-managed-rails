@@ -22,17 +22,19 @@
     <div class="panel-body">
       <% unless @payments.data.empty? %>
         <%= render 'charges' %>
-        <div class="topspace text-center">
-          <h3>Want your funds immediately?</h3>
-          <p>
-            For an extra 3% fee, we'll create an instant transfer to your debit card.
-          </p>
-          <% if @debit_card %>
-            <%= button_to "Get this transfer instantly", instant_transfer_path, data: { confirm: "Instant payout #{format_amount(@instant_amt)} to your #{@debit_card.brand} debit card ending in #{@debit_card.last4}?", disable_with: "Transferring funds..." }, method: :post, params: { amount: @instant_amt.round, fee: @instant_fee.round, destination: @debit_card.id }, class: "btn btn-success btn-lg btn-custom" %>
-          <% else %>
-            <%= link_to "Add a debit card", debit_cards_new_path, class: "btn btn-lg btn-success btn-custom" %>
-          <% end %>
-        </div>
+        <% if @balance_available > 0 %>
+          <div class="topspace text-center">
+            <h3>Want your funds immediately?</h3>
+            <p>
+              For an extra 3% fee, we'll create an instant transfer to your debit card.
+            </p>
+            <% if @debit_card %>
+              <%= button_to "Get this transfer instantly", instant_transfer_path, data: { confirm: "Instant payout #{format_amount(@instant_amt)} to your #{@debit_card.brand} debit card ending in #{@debit_card.last4}?", disable_with: "Transferring funds..." }, method: :post, params: { amount: @instant_amt.round, fee: @instant_fee.round, destination: @debit_card.id }, class: "btn btn-success btn-lg btn-custom" %>
+            <% else %>
+              <%= link_to "Add a debit card", debit_cards_new_path, class: "btn btn-lg btn-success btn-custom" %>
+            <% end %>
+          </div>
+        <% end %>
       <% else %>
         No donations yet.
       <% end %>

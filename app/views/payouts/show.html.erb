@@ -1,0 +1,61 @@
+<%= content_for :page_title, "View payout" %>
+<div class="container">
+  <div class="row topspace-lg">
+    <div class="col-md-12">
+      <h1 class="text-center">Payout details</h1>
+      <div>
+        <%= render 'layouts/messages' %>
+      </div>
+      <div class="panel panel-default topspace-lg">
+        <div class="panel-body">
+          <strong>Payout overview</strong>
+          <hr>
+          <dl class="dl-horizontal">
+            <dt>Date paid</dt>
+            <dd><%= format_date(@payout.created) %></dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>Payout amount</dt>
+            <dd><%= format_amount(@payout.amount) %></dd>
+          </dl>
+          <dl class="dl-horizontal">
+            <dt>Bank account</dt>
+            <dd><%= "#{@payout.bank_account.bank_name} ending in #{@payout.bank_account.last4}" %></dd>
+          </dl>
+        </div>
+      </div>
+      <div class="panel panel-default topspace">
+        <div class="panel-body">
+          <strong>Payout transactions</strong>
+          <hr>
+          <table class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Gross</th>
+                <th>Fee</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @txns.auto_paging_each do |txn| %>
+                <tr>
+                  <td>
+                    <% if txn.type.eql?('payment') %>
+                      <%= link_to txn.type, charge_path(txn.source.source_transfer.source_transaction) %>
+                    <% else %>
+                      <%= txn.type %>
+                    <% end %>
+                  </td>
+                  <td><%= format_amount(txn.amount) %></td>
+                  <td><%= format_amount(txn.fee) %></td>
+                  <td><%= format_amount(txn.net) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
