@@ -18,7 +18,7 @@ class PayoutsController < ApplicationController
         @txns = Stripe::BalanceTransaction.list(
           {
             payout: params[:id],
-            expand: ['data.source.source_transfer'],
+            expand: ['data.source.source_transfer', 'data.source.charge.source_transfer'],
             limit: 100
           },
           { stripe_account: current_user.stripe_account }
