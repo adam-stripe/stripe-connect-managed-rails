@@ -49,7 +49,7 @@
                       <% elsif txn.type.eql?('adjustment') %>
                         Marketplace fee refund
                       <% elsif txn.type.eql?('transfer') && txn.source.method.eql?('instant') %>
-                        <%= link_to "Instant payout", payout_path(txn.source.id) %>
+                        Instant payout <%= txn.source.id %>
                       <% else %>
                         <%= txn.type %>
                       <% end %>
