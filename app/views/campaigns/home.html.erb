@@ -29,6 +29,9 @@
       <div class="row">
         <div class="col-md-12 text-center">
           <%= paginate @campaigns, outer_window: 2 %>
+          <p>
+            <%= page_entries_info @campaigns, entry_name: 'campaign' %>
+          </p>
         </div>
       </div>
     </div>
