@@ -40,13 +40,13 @@
       <% end %>
     </div>
   </div>
-  <h2 class="page-header"><i class="fa fa-bank purple"></i> Transfers</h2>
+  <h2 class="page-header"><i class="fa fa-bank purple"></i> Payouts</h2>
   <div class="panel panel-default">
     <div class="panel-body">
       <% unless @payouts.data.empty? %>
         <%= render 'transfers' %>
       <% else %>
-        No transfers yet.
+        No payouts yet.
       <% end %>
     </div>
   </div>

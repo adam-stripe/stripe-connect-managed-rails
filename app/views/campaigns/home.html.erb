@@ -28,23 +28,15 @@
       <%= render 'campaigns' %>
       <div class="row">
         <div class="col-md-12 text-center">
-          <%= paginate @campaigns, outer_window: 2 %>
-          <p>
+          <p class="text-center">
             <%= page_entries_info @campaigns, entry_name: 'campaign' %>
+          </p>
+          <p class="topspace">
+            <%= link_to_previous_page @campaigns, 'Last Page', class: "btn btn-primary btn-custom" %>
+            <%= link_to_next_page @campaigns, 'Next Page', class: "btn btn-primary btn-custom" %>
           </p>
         </div>
       </div>
     </div>
   </div>
-  <% if params[:page] %>
-    <div class="row topspace-lg">
-      <div class="col-md-4 col-md-offset-4">
-        <% if user_signed_in? %>
-          <%= link_to "Create a campaign", new_campaign_path, class: "btn btn-lg btn-primary btn-custom btn-block shadow-sm" %>
-        <% else %>
-          <%= link_to "Create a campaign", new_user_registration_path, class: "btn btn-lg btn-primary btn-custom btn-block shadow-sm" %>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
 </div>
