@@ -1,26 +1,28 @@
 # Fundraising Marketplace: A Stripe Connect example app
 
-An example application built using [Stripe Connect](https://stripe.com/docs/connect) [managed accounts](https://stripe.com/docs/connect/managed-accounts). 
+An example application built using [Stripe Connect](https://stripe.com/docs/connect) [custom accounts](https://stripe.com/docs/connect/custom-accounts). **This application is provided as an example, but isn't meant to be run in production.**
 
-**Note: this application is provided as an example, but isn't meant to be run in production.**
+[![Demo](https://i.imgur.com/2YvhiaL.png)](https://stripe-marketplace-demo.herokuapp.com)
+
 
 ## Demo
 **You can find a working demo of this application deployed and running in test mode at https://stripe-marketplace-demo.herokuapp.com/**. Feel free to create an account, create a campaign, and make donations to see some data populated in the dashboard. You can find [test card numbers](https://stripe.com/docs/testing#cards), [bank accounts](https://stripe.com/docs/testing#managed-accounts), and [identity verification](https://stripe.com/docs/connect/testing) details in Stripe's documentation.
 
 ## Features
-* Create fundraising campaigns and managed Stripe Connect accounts. 
-* Add and modify connected [bank accounts](https://stripe.com/docs/api#account_create_bank_account). 
-* [Make successful donations](https://stripe.com/docs/testing#cards) and see declines using test cards.
+* Uses [Devise](https://github.com/plataformatec/devise) for user authentication.
+* Create fundraising campaigns and custom Stripe Connect accounts.
+* Add and modify connected [bank accounts](https://stripe.com/docs/api#account_create_bank_account).
+* [Make successful donations](https://stripe.com/docs/testing#cards) or see declines using test cards.
 * Checkout with either [Stripe Elements](https://stripe.com/docs/elements) or [Stripe Checkout](https://stripe.com/docs/checkout).
-* Fairly complete seller dashboard (doesn't include disputes, pagination, and some other features yet) to view charges, create refunds, see transfers, etc. 
+* Fairly complete seller dashboard to view charges, create refunds, see transfers, etc. Doesn't include dispute responses, pagination, and some other features yet.
+* Create [instant payouts](https://stripe.com/docs/connect/payouts#instant-payouts) and take a 3% fee in return using [account debits](https://stripe.com/docs/connect/account-debits).
 * Identity verification example form and dashboard prompt to work through the [identity verification](https://stripe.com/docs/connect/identity-verification) process. Includes examples of collecting all info up front vs incrementally.
-* Uses [Devise](https://github.com/plataformatec/devise) for use authentication.
+* [Create disputes](https://stripe.com/docs/testing#disputes) and use webhooks to recover funds + dispute fees automatically via account debits.
 
 ## Shortcomings, things still needed
 * Still pretty basic integration tests.
 * Email receipts/notifications/etc.
-* Additional features like pagination for charges/transfers, disputes in the dashboard, ACH payments, alternative payment methods, payouts to debit cards, etc. 
-* Some other additional validations.
+* Additional features like pagination for charges/transfers, ACH payments, alternative payment methods, etc.
 
 
 ## Specs
