@@ -2,8 +2,11 @@
 
 An example application built using [Stripe Connect](https://stripe.com/docs/connect) [custom accounts](https://stripe.com/docs/connect/custom-accounts). **This application is provided as an example, but isn't meant to be run in production.**
 
-[![Demo](https://i.imgur.com/2YvhiaL.png)](https://stripe-marketplace-demo.herokuapp.com)
+[![Dashboard demo](https://i.imgur.com/2YvhiaL.png)](https://stripe-marketplace-demo.herokuapp.com)
 
+[![Payout demo](https://i.imgur.com/6s5vm9A.png)](https://stripe-marketplace-demo.herokuapp.com)
+
+[![Charge view demo](https://i.imgur.com/4LRCmwc.png)](https://stripe-marketplace-demo.herokuapp.com)
 
 ## Demo
 **You can find a working demo of this application deployed and running in test mode at https://stripe-marketplace-demo.herokuapp.com/**. Feel free to create an account, create a campaign, and make donations to see some data populated in the dashboard. You can find [test card numbers](https://stripe.com/docs/testing#cards), [bank accounts](https://stripe.com/docs/testing#managed-accounts), and [identity verification](https://stripe.com/docs/connect/testing) details in Stripe's documentation.
@@ -30,6 +33,7 @@ An example application built using [Stripe Connect](https://stripe.com/docs/conn
 :poop: [Create disputes](https://stripe.com/docs/testing#disputes) and use [webhooks](https://stripe.com/docs/webhooks) to recover funds + dispute fees automatically via account debits.
 
 :arrow_right_hook: Includes [webhook signature validation](https://stripe.com/docs/webhooks#signatures) for enhanced security.
+
 
 ## Shortcomings, things still needed
 * Still pretty basic integration tests.
