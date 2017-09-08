@@ -13,7 +13,12 @@
       <tbody>
         <% @payments.each do |payment| %>
           <tr>
-            <td><%= link_to payment.source_transfer.source_transaction, charge_path(payment.source_transfer.source_transaction) %></td>
+            <td>
+              <%= link_to payment.source_transfer.source_transaction.id, charge_path(payment.source_transfer.source_transaction.id) %>
+              <% if payment.source_transfer.source_transaction.dispute.present? %>
+                <span class="label label-danger">Disputed</span>
+              <% end %>
+            </td>
             <td><%= number_to_currency(payment.amount/100) %></td>
             <td><%= format_amount(payment.amount - payment.application_fee.amount) %></td>
             <td><%= format_date(payment.created) %></td>

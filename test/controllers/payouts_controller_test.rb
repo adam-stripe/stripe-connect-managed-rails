@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class PayoutsControllerTest < ActionDispatch::IntegrationTest
-  test "should get show" do
-    get payouts_show_url
-    assert_response :success
+  test "should require valid payout ID" do
+    get payout_path('fake')
+    assert_response :redirect
   end
 
 end

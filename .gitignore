@@ -22,3 +22,6 @@
 
 # Ignore DS_store
 .DS_Store
+
+# Ignore ngrok for local testing
+ngrok

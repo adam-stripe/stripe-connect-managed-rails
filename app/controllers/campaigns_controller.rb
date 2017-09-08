@@ -59,7 +59,7 @@ class CampaignsController < ApplicationController
       @payments = Stripe::Charge.list(
         {
           limit: 100,
-          expand: ['data.source_transfer', 'data.application_fee'],
+          expand: ['data.source_transfer.source_transaction.dispute', 'data.application_fee'],
           source: {object: 'all'}
         },
         { stripe_account: current_user.stripe_account }
@@ -82,7 +82,7 @@ class CampaignsController < ApplicationController
       # For a large platform, it's generally preferrable to handle these async
       transactions = Stripe::BalanceTransaction.all(
         {
-          limit: 100, 
+          limit: 100,
           available_on: {gte: Time.now.to_i}
         },
         { stripe_account: current_user.stripe_account }
@@ -106,17 +106,17 @@ class CampaignsController < ApplicationController
       @debit_card = @stripe_account.external_accounts.find { |c| c.object == "card"}
       @instant_amt = @balance_available*0.97
       @instant_fee = @balance_available*0.03
-      
+
     # Handle Stripe exceptions
     rescue Stripe::StripeError => e
       flash[:error] = e.message
       redirect_to root_path
-    
+
     # Handle other exceptions
     rescue => e
       flash[:error] = e.message
       redirect_to root_path
-    end 
+    end
   end
 
   def edit
@@ -132,7 +132,7 @@ class CampaignsController < ApplicationController
     if @campaign.update_attributes(campaign_params)
       flash[:notice] = "Your campaign has been updated!"
       redirect_to @campaign
-    else 
+    else
       handle_error(@campaign.errors.full_messages, 'edit')
     end
   end
