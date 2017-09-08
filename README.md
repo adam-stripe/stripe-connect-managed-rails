@@ -10,15 +10,25 @@ An example application built using [Stripe Connect](https://stripe.com/docs/conn
 
 ## Features
 :lock: Uses [Devise](https://github.com/plataformatec/devise) for user authentication.
+
 :money_with_wings: Create fundraising campaigns and custom Stripe Connect accounts.
+
 :chart_with_upwards_trend: Fairly complete seller dashboard to view charges, create refunds, view payouts, etc.
+
 :iphone: Fully responsive for mobile browsers.
+
 :bank: Add and modify connected [bank accounts](https://stripe.com/docs/api#account_create_bank_account).
+
 :credit_card: Make donations with either [Stripe Elements](https://stripe.com/docs/elements) or [Stripe Checkout](https://stripe.com/docs/checkout). [Make successful donations](https://stripe.com/docs/testing#cards) using valid test card numbers or see declines using test cards.
+
 :sunglasses: Take a 10% [application fee](https://stripe.com/docs/connect/charges) from connected accounts for successful charges.
+
 :zap: Create payouts to debit cards using [instant payouts](https://stripe.com/docs/connect/payouts#instant-payouts) and take a 3% platform fee in return using [account debits](https://stripe.com/docs/connect/account-debits).
+
 :clipboard: Identity verification example form and dashboard prompt to work through the [identity verification](https://stripe.com/docs/connect/identity-verification) process. Includes examples of collecting all info up front vs incrementally.
+
 :poop: [Create disputes](https://stripe.com/docs/testing#disputes) and use [webhooks](https://stripe.com/docs/webhooks) to recover funds + dispute fees automatically via account debits.
+
 :arrow_right_hook: Includes [webhook signature validation](https://stripe.com/docs/webhooks#signatures) for enhanced security.
 
 ## Shortcomings, things still needed
