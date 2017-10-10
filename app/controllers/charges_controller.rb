@@ -7,7 +7,7 @@ class ChargesController < ApplicationController
       flash[:error] = "No payment information submitted."
       redirect_back(fallback_location: root_path) and return
     end
-    
+
     # Check for a valid campaign ID
     unless charge_params[:campaign] && Campaign.exists?(charge_params[:campaign])
       flash[:error] = "The campaign you specified doesn't exist."
@@ -23,14 +23,14 @@ class ChargesController < ApplicationController
 
       # Convert the amount to cents
       amount = (100 * charge_params[:amount].tr('$', '').to_r).to_i
-      
+
       # Create the charge with Stripe
       charge = Stripe::Charge.create({
         source: charge_params[:stripeToken],
         amount: amount,
-        currency: "usd", 
+        currency: "usd",
         application_fee: amount/10, # Take a 10% application fee for the platform
-        destination: account_id, 
+        destination: account_id,
         metadata: { "name" => charge_params[:name], "campaign" => campaign.id }
         }
       )
@@ -65,14 +65,14 @@ class ChargesController < ApplicationController
   def show
     begin
       # Retrieve the charge from Stripe
-      @charge = Stripe::Charge.retrieve(id: params[:id], expand: ['application_fee'])
+      @charge = Stripe::Charge.retrieve(id: params[:id], expand: ['application_fee', 'dispute'])
 
       # Validate that the user should be able to view this charge
       check_destination(@charge)
 
       # Get the campaign from the metadata on the charge object
       @campaign = Campaign.find(@charge.metadata.campaign)
-    
+
     # Handle exceptions from Stripe
     rescue Stripe::StripeError => e
       flash[:error] = e.message
@@ -118,7 +118,7 @@ class ChargesController < ApplicationController
     rescue Stripe::StripeError => e
       flash.now[:error] = e.message
       redirect_to dashboard_path
-    
+
     # Handle other failures
     rescue => e
       flash.now[:error] = e.message

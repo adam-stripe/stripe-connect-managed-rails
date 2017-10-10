@@ -41,14 +41,26 @@
           <% if @charge.refunded %>
             <button class="btn btn-lg btn-block btn-custom btn-danger disabled">This charge has been refunded</button>
           <% elsif @charge.dispute.present? %>
-            <div class="text-center text-danger">
-              This donation was disputed. <%= format_amount(@charge.dispute.balance_transactions.first.net.abs) %> in fees and disputed funds have been withdrawn from your account.
+            <div class="text-center">
+              <% if @charge.dispute.status.eql?('needs_response') %>
+                <span class="label label-danger">Needs response</span>
+                This donation was disputed. <%= format_amount(@charge.dispute.balance_transactions.first.net.abs) %> in fees and disputed funds have been withdrawn from your account.
+              <% elsif @charge.dispute.status.eql?('won') %>
+                <span class="label label-success">Won</span>
+                This dispute was won in your favor. <%= format_amount(@charge.dispute.balance_transactions.first.net.abs) %> in fees and disputed funds have been returned to your account.
+              <% elsif @charge.dispute.status.eql?('lost') %>
+                <span class="label label-default">Lost</span>
+                The bank sided in favor of the donor. <%= format_amount(@charge.dispute.balance_transactions.first.net.abs) %> in fees and disputed funds have been withdrawn from your account.
+              <% end %>
             </div>
           <% else %>
             <%= link_to "Refund this donation", charge_path(@charge.id), method: :delete, data: { confirm: "Are you sure you want to refund this charge?", disable_with: "<i class='fa fa-spinner fa-spin'></i> Refunding charge..." }, class: "btn btn-lg btn-block btn-custom btn-danger" %>
           <% end %>
         </div>
       </div>
+      <% if @charge.dispute.present? && (@charge.dispute.status.eql?('needs_response') || @charge.dispute.status.eql?('under_review')) %>
+        <%= render 'dispute' %>
+      <% end %>
     </div>
   </div>
 </div>

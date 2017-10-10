@@ -39,7 +39,7 @@
             </thead>
             <tbody>
               <% @txns.auto_paging_each do |txn| %>
-                <% unless txn.type.eql?('transfer') && txn.source.method.eql?('standard') %>
+                <% unless txn.type.eql?('transfer') && txn.source.type.eql?('bank_account') %>
                   <tr>
                     <td>
                       <% if txn.type.eql?('payment') %>
@@ -50,6 +50,8 @@
                         Marketplace fee refund
                       <% elsif txn.type.eql?('transfer') && txn.source.method.eql?('instant') %>
                         Instant payout <%= txn.source.id %>
+                      <% elsif txn.type.eql?('transfer') && txn.source.type.eql?('stripe_account') %>
+                        <%= txn.description %>
                       <% else %>
                         <%= txn.type %>
                       <% end %>

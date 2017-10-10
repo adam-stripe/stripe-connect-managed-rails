@@ -1,0 +1,85 @@
+<div class="topspace-lg">
+  <h2 class="text-center">Respond to this dispute</h2>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <form action="/disputes" method="POST" id="dispute-form">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Supporting information</label>
+              <textarea class="form-control input-lg" id="dispute_text" name="dispute_text"></textarea>
+              <div class="help-block">
+                Share any communication with the customer or feedback on why this donation shouldn't have been disputed
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Supporting document</label>
+              <input type="file" id="file_upload">
+              <span class="help-block">Upload any supporting documentation (optional)</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-lg btn-block btn-primary btn-custom submit" type="submit">Submit dispute information</button>
+          </div>
+        </div>
+      </div>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+      <%= hidden_field_tag :dispute_id, @charge.dispute.id -%>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+  var Stripe = Stripe("<%= ENV['PUBLISHABLE_KEY'] %>");
+
+  $(function() {
+    var $form = $('form');
+
+    $form.submit(function(event) {
+      // Prevent the form submission
+      event.preventDefault();
+
+      // If a dispute document is added, upload it client-side
+      if ($("#file_upload").val() !== "") {
+        // Disable the submit button to prevent repeated clicks:
+        $form.find('.submit').prop('disabled', true).html("<i class='fa fa-spinner fa-spin'></i> Submitting dispute information...");
+        // Remove any existing errors
+        $form.find('.alert-danger').remove();
+
+        var data = new FormData();
+        data.append('file', $('#file_upload')[0].files[0]);
+        data.append('purpose', 'dispute_evidence');
+
+        $.ajax({
+          url: 'https://uploads.stripe.com/v1/files',
+          data: data,
+          headers: {
+            'Authorization': 'Bearer ' + "<%= ENV['PUBLISHABLE_KEY'] %>"
+          },
+          cache: false,
+          contentType: false,
+          processData: false,
+          type: 'POST',
+        })
+        .done(function(response) {
+          // Insert the file id into the form so it gets submitted to the server:
+          $form.append($('<input type="hidden" name="dispute_document" />').val(response.id));
+          // Submit the form:
+          $form.get(0).submit();
+        })
+        .fail(function(response) {
+          $form.append("<div class='alert alert-danger'>"+response.responseJSON.error.message+"</div>");
+          $form.find('.submit').prop('disabled', false).text('Submit dispute information'); // Re-enable submission
+        });
+      }
+      else {
+        // Submit the form:
+        $form.get(0).submit();
+      }
+    });
+
+  });
+</script>

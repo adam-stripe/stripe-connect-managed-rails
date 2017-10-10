@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   devise_for :users, controllers: { registrations: "registrations" }
 
   root to: "campaigns#home"
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
   get 'debit_cards/new'
   post 'debit_cards/create', to: 'debit_cards#create'
   post 'debit_cards/destroy', to: 'debit_cards#destroy'
+  post 'disputes', to: 'disputes#create'
   post 'instant_transfer', to: 'debit_cards#transfer'
   get 'payouts/:id', to: 'payouts#show', as: 'payout'
   post 'webhooks/stripe', to: 'webhooks#stripe'

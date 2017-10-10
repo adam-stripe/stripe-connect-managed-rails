@@ -17,7 +17,7 @@ class WebhooksController < ApplicationController
       case event.type
 
       #############
-      # Chargebacks
+      # Disputes
       #############
       when 'charge.dispute.created'
         # The dispute that was created
@@ -41,6 +41,21 @@ class WebhooksController < ApplicationController
             description: "Dispute fee for #{charge.id}"
           },
           { stripe_account: charge.destination }
+        )
+      end
+
+    when 'charge.dispute.funds_reinstated'
+        # The dispute that was created
+        dispute = event.data.object
+
+        # Retrieve the charge related to this dispute
+        charge = Stripe::Charge.retrieve(dispute.charge)
+
+        # Create a transfer to the connected account to return the dispute fee
+        transfer = Stripe::Transfer.create(
+          amount: dispute.balance_transactions.second.net,
+          currency: "usd"
+          destination: charge.destination
         )
       end
 
