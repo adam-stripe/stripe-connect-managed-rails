@@ -53,7 +53,7 @@ class WebhooksController < ApplicationController
         # Create a transfer to the connected account to return the dispute fee
         transfer = Stripe::Transfer.create(
           amount: dispute.balance_transactions.second.net,
-          currency: "usd"
+          currency: "usd",
           destination: charge.destination
         )
       end
