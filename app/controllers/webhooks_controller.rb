@@ -42,9 +42,8 @@ class WebhooksController < ApplicationController
           },
           { stripe_account: charge.destination }
         )
-      end
 
-    when 'charge.dispute.funds_reinstated'
+      when 'charge.dispute.funds_reinstated'
         # The dispute that was created
         dispute = event.data.object
 
