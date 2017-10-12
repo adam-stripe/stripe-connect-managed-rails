@@ -131,6 +131,9 @@ h1, h2, h3, h4 {
 .topspace-lg {
   margin-top: 50px;
 }
+.leftspace {
+  margin-left: 8px;
+}
 .red {
   color: #B20000;
 }
@@ -226,8 +229,8 @@ h1, h2, h3, h4 {
   text-align: center;
 }
 /* media queries */
-@media only screen 
-and (min-device-width : 375px) 
+@media only screen
+and (min-device-width : 375px)
 and (max-device-width : 667px) {
   .home-hero h1 {
     font-size: 60px;
