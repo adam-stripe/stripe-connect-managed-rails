@@ -12,26 +12,34 @@
       </thead>
       <tbody>
         <% @payments.each do |payment| %>
-          <tr>
-            <td>
-              <%= link_to payment.source_transfer.source_transaction.id, charge_path(payment.source_transfer.source_transaction.id) %>
-              <% if payment.source_transfer.source_transaction.dispute.present? %>
-                <span class="label label-danger">Disputed</span>
-              <% end %>
-            </td>
-            <td><%= number_to_currency(payment.amount/100) %></td>
-            <td><%= format_amount(payment.amount - payment.application_fee.amount) %></td>
-            <td><%= format_date(payment.created) %></td>
-            <td class="text-center">
-              <% if payment.refunded %>
-                <span class="text-danger">
-                  <span class="fa fa-undo"></span> Refunded
-                </span>
-              <% else %>
-                <%= link_to "Refund", charge_path(payment.source_transfer.source_transaction.id), method: :delete, data: { confirm: "Are you sure you want to refund this charge?", disable_with: "<i class='fa fa-spinner fa-spin'></i> Refunding charge..." }, class: "btn btn-sm btn-block btn-custom btn-danger" %>
-              <% end %>
-            </td>
-          </tr>
+          <% if payment.source_transfer.source_transaction.present? %>
+            <tr>
+              <td>
+                <%= link_to payment.source_transfer.source_transaction.id, charge_path(payment.source_transfer.source_transaction.id) %>
+                <% if payment.source_transfer.source_transaction.dispute.present? %>
+                  <% if payment.source_transfer.source_transaction.dispute.status.eql?('needs_response') %>
+                    <span class="label label-danger leftspace">Disputed</span>
+                  <% elsif payment.source_transfer.source_transaction.dispute.status.eql?('lost') %>
+                    <span class="label label-default leftspace">Dispute lost</span>
+                  <% elsif payment.source_transfer.source_transaction.dispute.status.eql?('won') %>
+                    <span class="label label-success leftspace">Dispute won</span>
+                  <% end %>
+                <% end %>
+              </td>
+              <td><%= number_to_currency(payment.amount/100) %></td>
+              <td><%= format_amount(payment.amount - payment.application_fee.amount) %></td>
+              <td><%= format_date(payment.created) %></td>
+              <td class="text-center">
+                <% if payment.refunded %>
+                  <span class="text-danger">
+                    <span class="fa fa-undo"></span> Refunded
+                  </span>
+                <% else %>
+                  <%= link_to "Refund", charge_path(payment.source_transfer.source_transaction.id), method: :delete, data: { confirm: "Are you sure you want to refund this charge?", disable_with: "<i class='fa fa-spinner fa-spin'></i> Refunding charge..." }, class: "btn btn-sm btn-block btn-custom btn-danger" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
         <% end %>
       </tbody>
     </table>
