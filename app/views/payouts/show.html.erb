@@ -42,7 +42,7 @@
                 <% unless txn.type.eql?('transfer') && txn.source.type.eql?('bank_account') %>
                   <tr>
                     <td>
-                      <% if txn.type.eql?('payment') %>
+                      <% if txn.type.eql?('payment') && txn.source.source_transfer.source_transaction.present? %>
                         <%= link_to "Payment", charge_path(txn.source.source_transfer.source_transaction) %>
                       <% elsif txn.type.eql?('payment_refund') %>
                         <%= link_to "Payment refund", charge_path(txn.source.charge.source_transfer.source_transaction) %>
@@ -51,6 +51,8 @@
                       <% elsif txn.type.eql?('transfer') && txn.source.method.eql?('instant') %>
                         Instant payout <%= txn.source.id %>
                       <% elsif txn.type.eql?('transfer') && txn.source.type.eql?('stripe_account') %>
+                        <%= txn.description %>
+                      <% elsif txn.description.present? %>
                         <%= txn.description %>
                       <% else %>
                         <%= txn.type %>

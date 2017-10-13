@@ -19,6 +19,8 @@ class WebhooksController < ApplicationController
       #############
       # Disputes
       #############
+
+      # Recover dispute amounts and fees for disputed charges
       when 'charge.dispute.created'
         # The dispute that was created
         dispute = event.data.object
@@ -43,6 +45,7 @@ class WebhooksController < ApplicationController
           { stripe_account: charge.destination }
         )
 
+      # Return charge amount and fees if dispute is won
       when 'charge.dispute.funds_reinstated'
         # The dispute that was created
         dispute = event.data.object
@@ -56,6 +59,21 @@ class WebhooksController < ApplicationController
           currency: "usd",
           destination: charge.destination
         )
+
+        # Retrieve the destination payment
+        payment = Stripe::Charge.retrieve(
+          {
+            id: transfer.destination_payment
+          },
+          {
+            stripe_account: transfer.destination
+          }
+        )
+
+        # Update the description on the destination payment
+        payment.description = "Chargeback reversal for #{charge.id}"
+        payment.save
+
       end
 
     # Something bad happened with the event or retrieving details from Stripe: probably log this.
