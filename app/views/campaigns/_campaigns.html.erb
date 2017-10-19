@@ -1,35 +1,28 @@
-<% @campaigns.each do | campaign | %>
+<% @campaigns.each_slice(3) do | campaigns | %>
   <div class="row">
-    <div class="col-md-12">
-      <div class="panel panel-default campaign">
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-md-2 col-xs-12">
-              <%= image_tag("#{campaign.image}_sm.jpg", class: "img-responsive img-thumbnail") %>
+    <% campaigns.each do |campaign| %>
+      <div class="col-md-4">
+        <div class="panel panel-default campaign">
+          <%= link_to campaign_path(campaign) do %>
+            <div class="panel-body">
+              <%= image_tag("#{campaign.image}_sm.jpg") %>
+              <div class="body-padding">
+                <h4 class="text-center"><%= link_to campaign.title.titleize, campaign_path(campaign) %></a></h4>
+                <p class="goal text-center">
+                  <% if campaign.raised %>
+                     <span class="raised"><%= number_to_currency(campaign.raised/100, precision: 0) %></span> raised so far of <strong><%= number_to_currency(campaign.goal, precision: 0) %> goal</strong>
+                  <% else %>
+                    <strong><%= number_to_currency(campaign.goal, precision: 0) %> goal</strong>
+                  <% end %>
+                </p>
+                <p>
+                  <%= simple_format(truncate(campaign.description, length: 90)) %>
+                </p>
+              </div>
             </div>
-            <div class="col-md-8">
-              <h2><%= link_to campaign.title.titleize, campaign_path(campaign) %></a></h2>
-              <h4 class="goal">
-                <% if campaign.raised %>
-                   <span class="raised"><%= number_to_currency(campaign.raised/100) %></span> raised so far of <strong><%= number_to_currency(campaign.goal) %> goal</strong>
-                <% else %>
-                  <strong><%= number_to_currency(campaign.goal) %> goal</strong>
-                <% end %>
-              </h4>
-              <p>
-                <%= simple_format(campaign.description) %>
-              </p>
-            </div>
-            <div class="col-md-2">
-              <% if campaign.active %>
-                <%= link_to "View", campaign_path(campaign), class: "btn btn-lg btn-block btn-purple btn-custom" %></a>
-              <% else %>
-                <%= link_to "Inactive", campaign_path(campaign), class: "btn btn-lg btn-block btn-danger btn-custom" %></a>
-              <% end %>
-            </div>
-          </div>
+          <% end %>
         </div>
       </div>
-    </div>
+    <% end %>
   </div>
 <% end %>

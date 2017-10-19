@@ -136,7 +136,7 @@
     </script>
   <% end %>
 <% end %>
-<div class="container">
+<div class="container campaign-content">
   <div class="row topspace-lg">
     <div class="col-md-8">
       <%= render 'layouts/messages' %>
@@ -146,21 +146,21 @@
         </div>
       <% end %>
       <div class="text-center">
-        <%= image_tag("#{@campaign.image}_lg.jpg", class: "img-responsive img-thumbnail") %>
+        <%= image_tag("#{@campaign.image}_lg.jpg", class: "img-responsive") %>
       </div>
-      <h2 class="page-header text-center"><%= @campaign.title.titleize %></h2>
+      <h2 class="page-header text-center purple">
+        <%= @campaign.title.titleize %>
+      </h2>
       <h3 class="goal text-center">
         <% if @campaign.raised %>
-           <span class="raised"><%= format_amount(@campaign.raised) %></span> raised so far of <strong><%= number_to_currency(@campaign.goal) %> goal</strong>
+           <span class="raised"><%= format_amount(@campaign.raised) %></span> raised so far of <strong><%= number_to_currency(@campaign.goal, precision: 0) %> goal</strong>
         <% else %>
           <strong><%= number_to_currency(@campaign.goal) %> goal</strong>
         <% end %>
       </h3>
-      <div class="panel panel-default topspace-lg">
-        <div class="panel-body lato">
-          <%= simple_format(@campaign.description) %>
-        </div>
-      </div>
+      <blockquote class="lato topspace-lg">
+        <%= simple_format(@campaign.description) %>
+      </blockquote>
       <h3 class="text-center page-header">Donations</h3>
       <% unless @campaign.raised.to_i > 0 %>
         This campaign has not received any donations yet.
@@ -174,12 +174,9 @@
       <% else %>
         <%= render 'paymentform' %>
       <% end %>
-      <div class="text-center hint shadow-sm">
+      <div class="text-muted text-center">
         <p>
-          <i class="fa fa-info-circle"></i> Hint: use <strong>4242424242424242</strong> and any valid expiry for a successful charge.
-        </p>
-        <p>
-          <a href="https://stripe.com/docs/testing#cards" target="_blank">See all test card numbers</a>
+          <i class="fa fa-info-circle"></i> Hint: use a <a href="https://stripe.com/docs/testing#cards" target="_blank">Stripe test card</a> and any valid expiry for a successful charge.
         </p>
       </div>
       <% if current_user && @campaign.user_id.eql?(current_user.id) && @campaign.active %>
