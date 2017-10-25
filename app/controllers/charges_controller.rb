@@ -55,8 +55,9 @@ class ChargesController < ApplicationController
     rescue Stripe::StripeError => e
       flash[:error] = e.message
       redirect_to campaign_path(campaign)
+
+    # Handle other failures
     rescue => e
-      # Something else happened, completely unrelated to Stripe
       flash[:error] = e.message
       redirect_to campaign_path(campaign)
     end

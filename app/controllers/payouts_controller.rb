@@ -1,4 +1,6 @@
 class PayoutsController < ApplicationController
+  before_action :authenticate_user!
+
   def show
     # Retrieve the payout from Stripe to get details
     # For large production applications, it's usually best to store this state locally

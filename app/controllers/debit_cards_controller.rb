@@ -17,11 +17,11 @@ class DebitCardsController < ApplicationController
       # Create the bank account
       account.external_accounts.create(external_account: params[:stripeToken])
       account.save
-      
+
       # Success, send on to the dashboard
       flash[:success] = "Your debit card has been added!"
       redirect_to dashboard_path
-    
+
     # Handle exceptions from Stripe
     rescue Stripe::StripeError => e
       handle_error(e.message, 'new')
@@ -45,7 +45,7 @@ class DebitCardsController < ApplicationController
         {
           amount: params[:amount],
           currency: "usd",
-          method: "instant", 
+          method: "instant",
           destination: params[:destination]
         },
         { stripe_account: account.id }
@@ -55,14 +55,14 @@ class DebitCardsController < ApplicationController
       Stripe::Charge.create(
         amount: params[:fee],
         currency: "usd",
-        source: account.id, 
+        source: account.id,
         description: "Instant payout fee for #{payout.id}"
       )
-      
+
       # Success, send on to the dashboard
       flash[:success] = "Your payout has been made!"
       redirect_to dashboard_path
-    
+
     # Handle exceptions from Stripe
     rescue Stripe::StripeError => e
       flash[:error] = e.message
@@ -73,7 +73,5 @@ class DebitCardsController < ApplicationController
       flash[:error] = e.message
       redirect_to dashboard_path
     end
-
   end
-
 end

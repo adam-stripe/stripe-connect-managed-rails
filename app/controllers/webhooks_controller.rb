@@ -97,5 +97,4 @@ class WebhooksController < ApplicationController
       # Reverse the transfer and keep the application fee
       transfer.reversals.create
     end
-
 end
