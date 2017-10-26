@@ -175,12 +175,12 @@
         <% else %>
           <%= render 'paymentform' %>
         <% end %>
+        <div class="text-muted text-center">
+          <p>
+            <i class="fa fa-info-circle"></i> Hint: use a <a href="https://stripe.com/docs/testing#cards" target="_blank">Stripe test card</a> and any valid expiry for a successful charge.
+          </p>
+        </div>
       <% end %>
-      <div class="text-muted text-center">
-        <p>
-          <i class="fa fa-info-circle"></i> Hint: use a <a href="https://stripe.com/docs/testing#cards" target="_blank">Stripe test card</a> and any valid expiry for a successful charge.
-        </p>
-      </div>
       <% if current_user && @campaign.user_id.eql?(current_user.id) && @campaign.active %>
         <h3 class="page-header text-center"><i class="fa fa-edit purple"></i> Your campaign</h3>
         <p>
