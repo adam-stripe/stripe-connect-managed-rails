@@ -169,10 +169,12 @@
       <% end %>
     </div>
     <div class="col-md-4">
-      <% if params[:checkout].present? %>
-        <%= render 'checkoutform' %>
-      <% else %>
-        <%= render 'paymentform' %>
+      <% if @campaign.active %>
+        <% if params[:checkout].present? %>
+          <%= render 'checkoutform' %>
+        <% else %>
+          <%= render 'paymentform' %>
+        <% end %>
       <% end %>
       <div class="text-muted text-center">
         <p>
