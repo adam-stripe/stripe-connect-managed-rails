@@ -1,8 +1,7 @@
-<div class="panel panel-default">
+<div class="panel panel-default panel-payment">
   <div class="panel-body">
     <form action="/charges" method="POST" id="payment-form">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      <div id="card-errors" class="alert alert-danger"></div>
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
@@ -14,24 +13,24 @@
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <label>Cardholder Name</label>
-            <input class="form-control input-lg" id="name" name="name" type="text" data-stripe="name" placeholder="Jane Diaz">
+            <label>Payment details</label>
+            <input class="form-control input-lg" id="name" name="name" type="text" data-stripe="name" placeholder="Cardholder name">
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <label for="card-element">Card details</label>
             <div id="card-element" class="form-control input-lg field">
             </div>
+            <div class="red text-center" id="card-errors"></div>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <input type="hidden" name="campaign" value="<%= @campaign.id %>">
-          <button class="btn btn-lg btn-block btn-primary btn-custom" id="submit_payment" type="submit">
+          <button class="btn btn-lg btn-block btn-purple btn-custom" id="submit_payment" type="submit">
             Make a donation
           </button>
         </div>

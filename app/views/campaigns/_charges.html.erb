@@ -15,7 +15,10 @@
           <% if payment.source_transfer.source_transaction.present? %>
             <tr>
               <td>
-                <%= link_to payment.source_transfer.source_transaction.id, charge_path(payment.source_transfer.source_transaction.id) %>
+                <% if payment.source_transfer.source_transaction.source.object.eql?('card') %>
+                  <i class="fa fa-credit-card text-muted"></i>
+                <% end %>
+                <%= link_to payment.source_transfer.source_transaction.id, charge_path(payment.source_transfer.source_transaction.id), class: "leftspace" %>
                 <% if payment.source_transfer.source_transaction.dispute.present? %>
                   <% if payment.source_transfer.source_transaction.dispute.status.eql?('needs_response') %>
                     <span class="label label-danger leftspace">Disputed</span>

@@ -57,7 +57,12 @@
         // Style the payment element
         var style = {
           base: {
-            fontSize: "14px"
+            fontSize: "15px",
+            fontFamily: '"Open Sans", sans-serif',
+            fontSmoothing: 'antialiased',
+            '::placeholder': {
+              color: '#666',
+            },
           }
         };
 
@@ -177,7 +182,7 @@
         <% end %>
         <div class="text-muted text-center">
           <p>
-            <i class="fa fa-info-circle"></i> Hint: use a <a href="https://stripe.com/docs/testing#cards" target="_blank">Stripe test card</a> and any valid expiry for a successful charge.
+            <i class="fa fa-info-circle"></i> Hint: use a <a href="https://stripe.com/docs/testing#cards" target="_blank">Stripe test card</a> and any valid expiry.
           </p>
         </div>
       <% end %>

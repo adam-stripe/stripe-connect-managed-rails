@@ -4,6 +4,7 @@
 .btn {
   border-radius: 2px;
   padding: 6px 14px;
+  webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
 .btn-group-lg > .btn,
 .btn-lg {
@@ -177,35 +178,10 @@
   border: 1px solid #f64b87 !important;
 }
 .btn-custom {
-  border-bottom: 3px solid transparent;
-}
-.btn-custom.btn-default {
-  background-color: #dae6ec;
-  border-bottom: 2px solid #a4b6bf !important;
-}
-.btn-custom.btn-primary {
-  border-bottom: 2px solid #2494be !important;
-}
-.btn-custom.btn-success {
-  border-bottom: 2px solid #007e70 !important;
-}
-.btn-custom.btn-info {
-  border-bottom: 2px solid #08aac6 !important;
-}
-.btn-custom.btn-warning {
-  border-bottom: 2px solid #cc8800 !important;
-}
-.btn-custom.btn-danger {
-  border-bottom: 2px solid #c71612 !important;
-}
-.btn-custom.btn-inverse {
-  border-bottom: 2px solid #21252c !important;
-}
-.btn-custom.btn-purple {
-  border-bottom: 2px solid #443a80 !important;
-}
-.btn-custom.btn-pink {
-  border-bottom: 2px solid #e80c59 !important;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
 }
 .btn-rounded {
   border-radius: 2em;

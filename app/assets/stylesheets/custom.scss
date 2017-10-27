@@ -239,6 +239,21 @@ h1, h2, h3, h4 {
   border-width: 1px;
   box-shadow: none;
 }
+.panel-payment {
+  webkit-box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1),0 5px 15px rgba(0, 0, 0, 0.07);
+  -moz-box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1),0 5px 15px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1),0 5px 15px rgba(0, 0, 0, 0.07);
+  ::-webkit-input-placeholder, input {
+     font-size: 15px!important;
+     color: #666;
+     font-family: "Open Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  input {
+    color: #000;
+  }
+}
 #card-errors {
   display: none;
 }
