@@ -21,8 +21,8 @@ class StripeAccountsController < ApplicationController
               last_name: account_params[:last_name].capitalize,
               type: account_params[:account_type],
               dob: {
-                day: account_params[:dob_day], 
-                month: account_params[:dob_month], 
+                day: account_params[:dob_day],
+                month: account_params[:dob_month],
                 year: account_params[:dob_year]
               },
               address: {
@@ -34,27 +34,27 @@ class StripeAccountsController < ApplicationController
               ssn_last_4: account_params[:ssn_last_4]
             },
             tos_acceptance: {
-              date: Time.now.to_i, 
+              date: Time.now.to_i,
               ip: request.remote_ip
             }
           )
-        
+
         # Second option: create an account with incremental info
-        else 
+        else
           stripe_account = Stripe::Account.create(
             managed: true,
             legal_entity: {
               first_name: account_params[:first_name].capitalize,
               last_name: account_params[:last_name].capitalize,
-              type: account_params[:account_type], 
+              type: account_params[:account_type],
               dob: {
-                day: account_params[:dob_day], 
-                month: account_params[:dob_month], 
+                day: account_params[:dob_day],
+                month: account_params[:dob_month],
                 year: account_params[:dob_year]
               }
             },
             tos_acceptance: {
-              date: Time.now.to_i, 
+              date: Time.now.to_i,
               ip: request.remote_ip
             }
           )
@@ -73,7 +73,7 @@ class StripeAccountsController < ApplicationController
       current_user.stripe_account = stripe_account.id
 
       if current_user.save
-        flash[:success] = "Your account has been created! 
+        flash[:success] = "Your account has been created!
           Next, add a bank account where you'd like to receive transfers below."
         redirect_to new_bank_account_path
       else
@@ -115,7 +115,7 @@ class StripeAccountsController < ApplicationController
 
   # Custom action for full account info collection
   def full
-    @stripe_account = StripeAccount.new
+    @account = StripeAccount.new
     @full_account = true
   end
 
@@ -128,10 +128,10 @@ class StripeAccountsController < ApplicationController
     begin
       # Retrieve the Stripe account
       @stripe_account = Stripe::Account.retrieve(current_user.stripe_account)
-      
+
       @account = StripeAccount.new(account_params)
 
-      
+
       # Reject empty values
       account_params.each do |key, value|
         if value.empty?
@@ -195,8 +195,8 @@ class StripeAccountsController < ApplicationController
   private
     def account_params
       params.require(:stripe_account).permit(
-        :first_name, :last_name, :account_type, :dob_month, :dob_day, :dob_year, :tos, 
-        :ssn_last_4, :address_line1, :address_city, :address_state, :address_postal, :business_name, 
+        :first_name, :last_name, :account_type, :dob_month, :dob_day, :dob_year, :tos,
+        :ssn_last_4, :address_line1, :address_city, :address_state, :address_postal, :business_name,
         :business_tax_id, :full_account, :personal_id_number, :verification_document
       )
     end
