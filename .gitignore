@@ -25,3 +25,5 @@
 
 # Ignore ngrok for local testing
 ngrok
+
+# Ignore Gemfile.lock
