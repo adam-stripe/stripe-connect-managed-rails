@@ -1,3 +1,7 @@
+# Deprecated
+
+This repository has moved [here](https://github.com/adamjstevenson/stripe-connect-managed-rails).
+
 # Fundraising Marketplace: A Stripe Connect example app
 
 An example application built using [Stripe Connect](https://stripe.com/docs/connect) [custom accounts](https://stripe.com/docs/connect/custom-accounts). **This application is provided as an example, but isn't meant to be run in production.**

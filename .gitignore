@@ -27,3 +27,4 @@
 ngrok
 
 # Ignore Gemfile.lock
+Gemfile.lock
